@@ -1286,7 +1286,7 @@
                 const item = componentPhotos[comp.id];
                 if (!item) return;
 
-                const subfolderName = `${comp.name} - ${selectedPcName}`;
+                const subfolderName = comp.name; // Ej: "Teclado", "Mouse", etc.
 
                 // 1. Foto General
                 if (item.general) {
