@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auditoría de Equipos - ELECTROSUR</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            background: #f0f2f5;
+            color: #1a1a2e;
+            min-height: 100vh;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #fff;
+            padding: 18px 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .header h1 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .header p {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            margin-top: 2px;
+        }
+
+        /* ===== TABS ===== */
+        .tabs {
+            display: flex;
+            background: #fff;
+            border-bottom: 2px solid #e0e0e0;
+            position: sticky;
+            top: 62px;
+            z-index: 99;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 14px 10px;
+            border: none;
+            background: transparent;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #888;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            position: relative;
+        }
+
+        .tab-btn.active {
+            color: #0f3460;
+            border-bottom-color: #0f3460;
+            background: rgba(15, 52, 96, 0.04);
+        }
+
+        .tab-btn:hover:not(.active) {
+            color: #555;
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        .tab-btn .tab-icon {
+            display: block;
+            font-size: 1.3rem;
+            margin-bottom: 2px;
+        }
+
+        /* ===== CONTENT ===== */
+        .tab-content {
+            display: none;
+            padding: 16px;
+            max-width: 650px;
+            margin: 0 auto;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== FORM GROUPS ===== */
+        .section-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #0f3460;
+            margin: 20px 0 10px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid #e8ecf1;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .section-title:first-child {
+            margin-top: 4px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+            background: #fff;
+            padding: 12px;
+            border-radius: 10px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+            color: #333;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #0f3460;
+        }
+
+        /* ===== PASTE BOX (capturas en PC) ===== */
+        .paste-box {
+            border: 2px dashed #c5cae9;
+            border-radius: 10px;
+            min-height: 70px;
+            padding: 12px;
+            text-align: center;
+            color: #999;
+            cursor: pointer;
+            position: relative;
+            background: #fafbff;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .paste-box:focus {
+            outline: none;
+            border-color: #0f3460;
+            background: #e8edf6;
+            box-shadow: 0 0 0 3px rgba(15, 52, 96, 0.1);
+        }
+
+        .paste-box.has-image {
+            border-color: #4caf50;
+            border-style: solid;
+            background: #f1f8f1;
+        }
+
+        .paste-box img {
+            max-width: 100%;
+            max-height: 180px;
+            display: block;
+            margin: 0 auto;
+            border-radius: 6px;
+        }
+
+        .paste-box .placeholder {
+            pointer-events: none;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .paste-box .placeholder .icon {
+            font-size: 1.5rem;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .paste-box .btn-remove {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: #e53935;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 26px;
+            height: 26px;
+            font-size: 14px;
+            cursor: pointer;
+            line-height: 26px;
+            padding: 0;
+            box-shadow: 0 2px 6px rgba(229, 57, 53, 0.4);
+            transition: transform 0.15s;
+        }
+
+        .paste-box .btn-remove:hover {
+            transform: scale(1.1);
+        }
+
+        /* ===== SUBMIT BUTTON ===== */
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 16px;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-submit.primary {
+            background: linear-gradient(135deg, #0f3460, #16213e);
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(15, 52, 96, 0.3);
+        }
+
+        .btn-submit.primary:hover {
+            box-shadow: 0 6px 20px rgba(15, 52, 96, 0.45);
+            transform: translateY(-1px);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* ===== STATUS ===== */
+        .status {
+            margin-top: 14px;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .status.show {
+            display: block;
+        }
+
+        .status.info {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .status.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status.error {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        /* ===== HISTORIAL TAB ===== */
+        .historial-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .btn-refresh {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #0f3460, #16213e);
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.25s ease;
+            box-shadow: 0 3px 10px rgba(15, 52, 96, 0.25);
+        }
+
+        .btn-refresh:hover {
+            box-shadow: 0 5px 16px rgba(15, 52, 96, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .pc-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .pc-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 14px 16px;
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            border-left: 4px solid #c5cae9;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .pc-card:hover {
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+            transform: translateX(2px);
+            border-left-color: #0f3460;
+        }
+
+        .pc-card .pc-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pc-card .pc-name {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #1a1a2e;
+        }
+
+        .pc-card .pc-date {
+            font-size: 0.78rem;
+            color: #888;
+            margin-top: 2px;
+        }
+
+        .pc-card .pc-arrow {
+            font-size: 1.2rem;
+            color: #bbb;
+            transition: color 0.2s;
+        }
+
+        .pc-card:hover .pc-arrow {
+            color: #0f3460;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+
+        .empty-state .icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 30px;
+            color: #888;
+        }
+
+        .loading .spinner {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 3px solid #e0e0e0;
+            border-top-color: #0f3460;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 10px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ===== PHOTO PANEL (fotos externas desde celular) ===== */
+        .photo-panel {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .photo-panel.active {
+            display: block;
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #e8ecf1;
+        }
+
+        .btn-back {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 2px solid #e0e0e0;
+            background: #fff;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .btn-back:hover {
+            border-color: #0f3460;
+            background: #e8edf6;
+        }
+
+        .panel-header .title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #0f3460;
+        }
+
+        .panel-header .subtitle {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        /* Tarjetas de componentes en Fotos Externas */
+        .component-card {
+            background: #ffffff;
+            border: 1px solid #e1e8ed;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+        }
+
+        .component-card-header {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #0f3460;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #edf2f7;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .photo-subgroup {
+            margin-bottom: 14px;
+        }
+
+        .photo-subgroup:last-child {
+            margin-bottom: 0;
+        }
+
+        .photo-subgroup-label {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .general-photo-box {
+            border: 2px dashed #93c5fd;
+            border-radius: 10px;
+            background: #f0f7ff;
+            padding: 16px 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .general-photo-box:hover,
+        .general-photo-box:active {
+            border-color: #0f3460;
+            background: #e0effe;
+        }
+
+        .general-photo-box .icon {
+            font-size: 1.6rem;
+            margin-bottom: 4px;
+        }
+
+        .general-photo-box .text {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #0f3460;
+        }
+
+        .general-photo-box .subtext {
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-top: 2px;
+        }
+
+        .general-photo-preview {
+            position: relative;
+            width: 100%;
+            height: 180px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid #10b981;
+            background: #111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .general-photo-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .general-ready-badge {
+            font-size: 0.78rem;
+            color: #059669;
+            font-weight: 600;
+            margin-top: 4px;
+            text-align: right;
+        }
+
+        .btn-add-specific {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1.5px dashed #cbd5e1;
+            border-radius: 8px;
+            background: #f8fafc;
+            font-family: inherit;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #334155;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .btn-add-specific:hover,
+        .btn-add-specific:active {
+            border-color: #0f3460;
+            background: #f1f5f9;
+            color: #0f3460;
+        }
+
+        /* Galería de fotos múltiples */
+        .photos-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .photo-thumb {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid #e2e8f0;
+            flex-shrink: 0;
+            background: #f8fafc;
+        }
+
+        .photo-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-thumb .btn-remove-thumb,
+        .general-photo-preview .btn-remove-thumb {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: rgba(220, 38, 38, 0.9);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            font-size: 11px;
+            cursor: pointer;
+            line-height: 22px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+        }
+
+        .photo-count {
+            font-size: 0.78rem;
+            color: #059669;
+            font-weight: 600;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.1rem;
+            }
+
+            .tab-btn {
+                font-size: 0.85rem;
+                padding: 12px 8px;
+            }
+
+            .tab-content {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <div class="header">
+        <h1>⚡ Auditoría de Equipos</h1>
+        <p>ELECTROSUR</p>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="showTab('nuevo')" id="tabBtnNuevo">
+            <span class="tab-icon">📝</span>
+            Nuevo Registro
+        </button>
+        <button class="tab-btn" onclick="showTab('historial')" id="tabBtnHistorial">
+            <span class="tab-icon">📋</span>
+            Historial
+        </button>
+    </div>
+
+    <!-- ==================== TAB 1: NUEVO REGISTRO ==================== -->
+    <div id="tab-nuevo" class="tab-content active">
+
+        <div class="form-group">
+            <label>🖥️ Nombre de la PC (Ej: PC_001):</label>
+            <input type="text" id="pcName" placeholder="Escribe el nombre de la PC...">
+        </div>
+
+        <div class="section-title">📸 1. Capturas de Pantalla</div>
+
+        <div class="form-group">
+            <label>Peso Disco C:</label>
+            <div class="paste-box" id="f_discoC" tabindex="0" contenteditable="true">
+                <span class="placeholder"><span class="icon">📋</span>Clic aquí + Ctrl+V</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Peso Disco D:</label>
+            <div class="paste-box" id="f_discoD" tabindex="0" contenteditable="true">
+                <span class="placeholder"><span class="icon">📋</span>Clic aquí + Ctrl+V</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Ruta \\elsxnas\home:</label>
+            <div class="paste-box" id="f_red" tabindex="0" contenteditable="true">
+                <span class="placeholder"><span class="icon">📋</span>Clic aquí + Ctrl+V</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Usuarios:</label>
+            <div class="paste-box" id="f_usuarios" tabindex="0" contenteditable="true">
+                <span class="placeholder"><span class="icon">📋</span>Clic aquí + Ctrl+V</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Impresoras:</label>
+            <div class="paste-box" id="f_impresoras" tabindex="0" contenteditable="true">
+                <span class="placeholder"><span class="icon">📋</span>Clic aquí + Ctrl+V</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Programas:</label>
+            <div class="paste-box" id="f_programas" tabindex="0" contenteditable="true">
+                <span class="placeholder"><span class="icon">📋</span>Clic aquí + Ctrl+V</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Carpetas Compartidas:</label>
+            <div class="paste-box" id="f_carpetas" tabindex="0" contenteditable="true">
+                <span class="placeholder"><span class="icon">📋</span>Clic aquí + Ctrl+V</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>IP:</label>
+            <div class="paste-box" id="f_ip" tabindex="0" contenteditable="true">
+                <span class="placeholder"><span class="icon">📋</span>Clic aquí + Ctrl+V</span>
+            </div>
+        </div>
+
+        <button class="btn-submit primary" onclick="enviarCapturas()" id="btnSubmitNuevo">
+            🚀 Subir Capturas a Drive
+        </button>
+        <div id="statusNuevo" class="status"></div>
+    </div>
+
+    <!-- ==================== TAB 2: HISTORIAL ==================== -->
+    <div id="tab-historial" class="tab-content">
+
+        <!-- Lista de PCs -->
+        <div id="pcListView">
+            <div class="historial-actions">
+                <button class="btn-refresh" onclick="cargarHistorial()">
+                    🔄 Cargar PCs Registradas
+                </button>
+            </div>
+
+            <div id="pcListContainer">
+                <div class="empty-state">
+                    <div class="icon">📂</div>
+                    <p>Presiona el botón para cargar<br>las PCs ya registradas</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel de fotos externas (se muestra al seleccionar una PC) -->
+        <div id="photoPanel" class="photo-panel">
+            <div class="panel-header">
+                <button class="btn-back" onclick="volverALista()">←</button>
+                <div>
+                    <div class="title" id="panelPcName">PC_001</div>
+                    <div class="subtitle">Agregar fotos externas</div>
+                </div>
+            </div>
+
+            <div class="section-title">📷 Fotos Externas por Componente</div>
+
+            <!-- Componente: Teclado -->
+            <div class="component-card">
+                <div class="component-card-header">⌨️ Teclado</div>
+                <div class="photo-subgroup">
+                    <div class="photo-subgroup-label">📸 Foto General (vista completa)</div>
+                    <div id="general_teclado"></div>
+                </div>
+                <div class="photo-subgroup">
+                    <div class="photo-subgroup-label">
+                        <span>🔍 Fotos Específicas / Detalles</span>
+                        <span class="photo-count" id="count_teclado"></span>
+                    </div>
+                    <div class="photos-container" id="specifics_teclado"></div>
+                    <button type="button" class="btn-add-specific" onclick="capturarFoto('teclado', 'specific')">
+                        ➕ Agregar Foto de Detalle
+                    </button>
+                </div>
+            </div>
+
+            <!-- Componente: Mouse -->
+            <div class="component-card">
+                <div class="component-card-header">🖱️ Mouse</div>
+                <div class="photo-subgroup">
+                    <div class="photo-subgroup-label">📸 Foto General (vista completa)</div>
+                    <div id="general_mouse"></div>
+                </div>
+                <div class="photo-subgroup">
+                    <div class="photo-subgroup-label">
+                        <span>🔍 Fotos Específicas / Detalles</span>
+                        <span class="photo-count" id="count_mouse"></span>
+                    </div>
+                    <div class="photos-container" id="specifics_mouse"></div>
+                    <button type="button" class="btn-add-specific" onclick="capturarFoto('mouse', 'specific')">
+                        ➕ Agregar Foto de Detalle
+                    </button>
+                </div>
+            </div>
+
+            <!-- Componente: Monitor -->
+            <div class="component-card">
+                <div class="component-card-header">🖥️ Monitor</div>
+                <div class="photo-subgroup">
+                    <div class="photo-subgroup-label">📸 Foto General (vista completa)</div>
+                    <div id="general_monitor"></div>
+                </div>
+                <div class="photo-subgroup">
+                    <div class="photo-subgroup-label">
+                        <span>🔍 Fotos Específicas / Detalles</span>
+                        <span class="photo-count" id="count_monitor"></span>
+                    </div>
+                    <div class="photos-container" id="specifics_monitor"></div>
+                    <button type="button" class="btn-add-specific" onclick="capturarFoto('monitor', 'specific')">
+                        ➕ Agregar Foto de Detalle
+                    </button>
+                </div>
+            </div>
+
+            <!-- Componente: PC / CPU -->
+            <div class="component-card">
+                <div class="component-card-header">💻 PC / CPU</div>
+                <div class="photo-subgroup">
+                    <div class="photo-subgroup-label">📸 Foto General (vista completa)</div>
+                    <div id="general_pc"></div>
+                </div>
+                <div class="photo-subgroup">
+                    <div class="photo-subgroup-label">
+                        <span>🔍 Fotos Específicas / Detalles</span>
+                        <span class="photo-count" id="count_pc"></span>
+                    </div>
+                    <div class="photos-container" id="specifics_pc"></div>
+                    <button type="button" class="btn-add-specific" onclick="capturarFoto('pc', 'specific')">
+                        ➕ Agregar Foto de Detalle
+                    </button>
+                </div>
+            </div>
+
+            <!-- Componente: Impresora -->
+            <div class="component-card">
+                <div class="component-card-header">🖨️ Impresora</div>
+                <div class="photo-subgroup">
+                    <div class="photo-subgroup-label">📸 Foto General (vista completa)</div>
+                    <div id="general_impresora"></div>
+                </div>
+                <div class="photo-subgroup">
+                    <div class="photo-subgroup-label">
+                        <span>🔍 Fotos Específicas / Detalles</span>
+                        <span class="photo-count" id="count_impresora"></span>
+                    </div>
+                    <div class="photos-container" id="specifics_impresora"></div>
+                    <button type="button" class="btn-add-specific" onclick="capturarFoto('impresora', 'specific')">
+                        ➕ Agregar Foto de Detalle
+                    </button>
+                </div>
+            </div>
+
+            <!-- Componente: Webcam -->
+            <div class="component-card">
+                <div class="component-card-header">📹 Cámara Web / Webcam</div>
+                <div class="photo-subgroup">
+                    <div class="photo-subgroup-label">📸 Foto General (vista completa)</div>
+                    <div id="general_webcam"></div>
+                </div>
+                <div class="photo-subgroup">
+                    <div class="photo-subgroup-label">
+                        <span>🔍 Fotos Específicas / Detalles</span>
+                        <span class="photo-count" id="count_webcam"></span>
+                    </div>
+                    <div class="photos-container" id="specifics_webcam"></div>
+                    <button type="button" class="btn-add-specific" onclick="capturarFoto('webcam', 'specific')">
+                        ➕ Agregar Foto de Detalle
+                    </button>
+                </div>
+            </div>
+
+            <!-- Inputs ocultos para captura -->
+            <input type="file" id="hiddenCameraInputGeneral" accept="image/*" capture="environment" style="display:none;">
+            <input type="file" id="hiddenCameraInputSpecific" accept="image/*" multiple style="display:none;">
+
+            <button class="btn-submit primary" onclick="enviarFotosExternas()" id="btnSubmitFotos">
+                📤 Subir Fotos a esta PC
+            </button>
+            <div id="statusFotos" class="status"></div>
+        </div>
+    </div>
+
+    <!-- ==================== JAVASCRIPT ==================== -->
+    <script>
+        // ===== CONFIGURACIÓN =====
+        // PEGA AQUÍ LA URL DE TU GOOGLE APPS SCRIPT (debe soportar doGet y doPost)
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzXqDhg2XL0iJPL-UHOVtZuAw4pcDf3Ieklnvx6e8er6AbMUUCCiF3so4-4raEJgeeH/exec";
+
+        // ===== VARIABLES GLOBALES =====
+        const pastedImages = {};    // Imágenes pegadas en el formulario nuevo
+        let selectedPcName = '';    // PC seleccionada en historial
+
+        // ===== TABS =====
+        function showTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+            document.getElementById('tab-' + tab).classList.add('active');
+
+            if (tab === 'nuevo') {
+                document.getElementById('tabBtnNuevo').classList.add('active');
+            } else {
+                document.getElementById('tabBtnHistorial').classList.add('active');
+                // Auto-cargar historial la primera vez
+                if (!document.querySelector('.pc-card')) {
+                    cargarHistorial();
+                }
+            }
+        }
+
+        // ===== PASTE BOXES (para capturas en PC) =====
+        document.querySelectorAll('.paste-box').forEach(box => {
+            box.addEventListener('paste', function (e) {
+                e.preventDefault();
+                const items = e.clipboardData.items;
+                for (let item of items) {
+                    if (item.type.startsWith('image/')) {
+                        const file = item.getAsFile();
+                        const reader = new FileReader();
+                        reader.onload = (ev) => {
+                            const dataUrl = ev.target.result;
+                            const base64 = dataUrl.split(',')[1];
+                            const mimeType = item.type;
+
+                            pastedImages[box.id] = { base64, mimeType };
+
+                            box.innerHTML = '';
+                            const img = document.createElement('img');
+                            img.src = dataUrl;
+                            box.appendChild(img);
+
+                            const btn = document.createElement('button');
+                            btn.className = 'btn-remove';
+                            btn.innerHTML = '✕';
+                            btn.onclick = function (ev) {
+                                ev.stopPropagation();
+                                delete pastedImages[box.id];
+                                box.innerHTML = '<span class="placeholder"><span class="icon">📋</span>Clic aquí + Ctrl+V</span>';
+                                box.classList.remove('has-image');
+                            };
+                            box.appendChild(btn);
+                            box.classList.add('has-image');
+                        };
+                        reader.readAsDataURL(file);
+                        break;
+                    }
+                }
+            });
+
+            box.addEventListener('keydown', function (e) {
+                if (!(e.ctrlKey && e.key === 'v')) {
+                    e.preventDefault();
+                }
+            });
+
+            box.addEventListener('drop', function (e) {
+                e.preventDefault();
+            });
+        });
+
+        // ===== ENVIAR CAPTURAS (Tab Nuevo Registro) =====
+        async function enviarCapturas() {
+            const pcName = document.getElementById('pcName').value.trim();
+            if (!pcName) { alert("Ingresa el nombre de la PC"); return; }
+
+            const statusEl = document.getElementById('statusNuevo');
+            showStatus(statusEl, 'info', '⏳ Procesando capturas...');
+
+            const btn = document.getElementById('btnSubmitNuevo');
+            btn.disabled = true;
+
+            let filesArray = [];
+            for (let id in pastedImages) {
+                const data = pastedImages[id];
+                const ext = data.mimeType.split('/')[1] || 'png';
+                filesArray.push({
+                    name: id.replace('f_', '') + '.' + ext,
+                    mimeType: data.mimeType,
+                    base64: data.base64
+                });
+            }
+
+            if (filesArray.length === 0) {
+                alert("Pega al menos una captura.");
+                btn.disabled = false;
+                statusEl.classList.remove('show');
+                return;
+            }
+
+            showStatus(statusEl, 'info', '📤 Subiendo a Google Drive... esto puede tardar un minuto.');
+
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ pcName: pcName, files: filesArray })
+                });
+                showStatus(statusEl, 'success', '✅ ¡Capturas subidas exitosamente!');
+            } catch (error) {
+                showStatus(statusEl, 'error', '❌ Error de conexión. Revisa la consola.');
+                console.error(error);
+            }
+
+            btn.disabled = false;
+        }
+
+        // ===== HISTORIAL =====
+        async function cargarHistorial() {
+            const container = document.getElementById('pcListContainer');
+            container.innerHTML = '<div class="loading"><div class="spinner"></div><br>Cargando PCs...</div>';
+
+            try {
+                const url = SCRIPT_URL + '?action=list';
+                console.log('Fetching:', url);
+                const response = await fetch(url);
+                const text = await response.text();
+                console.log('Response:', text);
+
+                let data;
+                try {
+                    data = JSON.parse(text);
+                } catch (parseErr) {
+                    // Si no es JSON, el script no tiene doGet o hay error
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <div class="icon">⚠️</div>
+                            <p><strong>El script no devolvió datos válidos.</strong></p>
+                            <p style="font-size:0.8rem; color:#888; margin-top:8px;">
+                                Asegúrate de:<br>
+                                1. Haber copiado el nuevo Code.gs al script<br>
+                                2. Haber puesto el ID correcto de tu carpeta<br>
+                                3. Haber hecho una <strong>nueva implementación</strong><br>
+                                4. Haber copiado la <strong>nueva URL</strong> aquí
+                            </p>
+                        </div>`;
+                    console.error('No es JSON:', text.substring(0, 500));
+                    return;
+                }
+
+                // Si el script devolvió un error
+                if (data.error) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <div class="icon">⚠️</div>
+                            <p><strong>Error del script:</strong></p>
+                            <p style="font-size:0.8rem; color:#c62828; margin-top:6px; word-break:break-all;">${data.error}</p>
+                        </div>`;
+                    return;
+                }
+
+                if (!data.folders || data.folders.length === 0) {
+                    container.innerHTML = '<div class="empty-state"><div class="icon">📭</div><p>No hay PCs registradas aún</p></div>';
+                    return;
+                }
+
+                // Ordenar por fecha (más recientes primero)
+                data.folders.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                let html = '<div class="pc-list">';
+                for (let folder of data.folders) {
+                    const date = new Date(folder.date);
+                    const dateStr = date.toLocaleDateString('es-PE', {
+                        day: '2-digit', month: 'short', year: 'numeric'
+                    });
+                    html += `
+                        <div class="pc-card" onclick="seleccionarPC('${folder.name}')">
+                            <div class="pc-info">
+                                <span class="pc-name">🖥️ ${folder.name}</span>
+                                <span class="pc-date">📅 ${dateStr}</span>
+                            </div>
+                            <span class="pc-arrow">→</span>
+                        </div>`;
+                }
+                html += '</div>';
+                container.innerHTML = html;
+            } catch (error) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">⚠️</div>
+                        <p><strong>Error de conexión</strong></p>
+                        <p style="font-size:0.8rem; color:#888; margin-top:6px;">${error.message}</p>
+                    </div>`;
+                console.error('Error completo:', error);
+            }
+        }
+
+        // ===== ALMACÉN DE FOTOS POR COMPONENTE =====
+        // Estructura: { teclado: { general: null, specifics: [] }, ... }
+        const componentPhotos = {};
+        const COMPONENTS = [
+            { id: 'teclado', name: 'Teclado' },
+            { id: 'mouse', name: 'Mouse' },
+            { id: 'monitor', name: 'Monitor' },
+            { id: 'pc', name: 'PC / CPU' },
+            { id: 'impresora', name: 'Impresora' },
+            { id: 'webcam', name: 'Webcam' }
+        ];
+
+        let activeCapture = { comp: '', type: '' }; // type: 'general' | 'specific'
+
+        // ===== SELECCIONAR PC PARA FOTOS EXTERNAS =====
+        function seleccionarPC(pcName) {
+            selectedPcName = pcName;
+            document.getElementById('panelPcName').textContent = pcName;
+            document.getElementById('pcListView').style.display = 'none';
+            document.getElementById('photoPanel').classList.add('active');
+
+            // Limpiar y renderizar componentes
+            COMPONENTS.forEach(comp => {
+                componentPhotos[comp.id] = { general: null, specifics: [] };
+                renderGeneralPhoto(comp.id);
+                renderSpecificPhotos(comp.id);
+            });
+
+            // Limpiar status
+            const statusEl = document.getElementById('statusFotos');
+            if (statusEl) statusEl.classList.remove('show');
+        }
+
+        function volverALista() {
+            document.getElementById('photoPanel').classList.remove('active');
+            document.getElementById('pcListView').style.display = 'block';
+        }
+
+        // ===== CAPTURAR FOTOS =====
+        function capturarFoto(comp, type) {
+            activeCapture = { comp, type };
+            if (type === 'general') {
+                const input = document.getElementById('hiddenCameraInputGeneral');
+                input.value = '';
+                input.click();
+            } else {
+                const input = document.getElementById('hiddenCameraInputSpecific');
+                input.value = '';
+                input.click();
+            }
+        }
+
+        // Input para foto general (1 foto, abre cámara)
+        document.getElementById('hiddenCameraInputGeneral').addEventListener('change', function () {
+            if (!activeCapture.comp || !this.files.length) return;
+            const comp = activeCapture.comp;
+            const file = this.files[0];
+            const reader = new FileReader();
+            reader.onload = function (ev) {
+                const dataUrl = ev.target.result;
+                if (!componentPhotos[comp]) componentPhotos[comp] = { general: null, specifics: [] };
+                componentPhotos[comp].general = {
+                    base64: dataUrl.split(',')[1],
+                    mimeType: file.type || 'image/jpeg',
+                    dataUrl: dataUrl
+                };
+                renderGeneralPhoto(comp);
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // Input para fotos específicas / detalle (múltiples)
+        document.getElementById('hiddenCameraInputSpecific').addEventListener('change', function () {
+            if (!activeCapture.comp || !this.files.length) return;
+            const comp = activeCapture.comp;
+            if (!componentPhotos[comp]) componentPhotos[comp] = { general: null, specifics: [] };
+
+            const files = Array.from(this.files);
+            files.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function (ev) {
+                    const dataUrl = ev.target.result;
+                    componentPhotos[comp].specifics.push({
+                        base64: dataUrl.split(',')[1],
+                        mimeType: file.type || 'image/jpeg',
+                        dataUrl: dataUrl
+                    });
+                    renderSpecificPhotos(comp);
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+
+        // ===== RENDERIZAR FOTO GENERAL =====
+        function renderGeneralPhoto(comp) {
+            const container = document.getElementById('general_' + comp);
+            if (!container) return;
+            const data = componentPhotos[comp] && componentPhotos[comp].general;
+
+            if (data) {
+                container.innerHTML = `
+                    <div class="general-photo-preview">
+                        <img src="${data.dataUrl}" alt="Foto General">
+                        <button type="button" class="btn-remove-thumb" onclick="quitarFotoGeneral('${comp}')" title="Eliminar foto general">✕</button>
+                    </div>
+                    <div class="general-ready-badge">✅ Foto General lista</div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <div class="general-photo-box" onclick="capturarFoto('${comp}', 'general')">
+                        <div class="icon">📸</div>
+                        <div class="text">Tomar Foto General</div>
+                        <div class="subtext">Toca para abrir cámara / adjuntar</div>
+                    </div>
+                `;
+            }
+        }
+
+        // ===== RENDERIZAR FOTOS ESPECÍFICAS / DETALLES =====
+        function renderSpecificPhotos(comp) {
+            const container = document.getElementById('specifics_' + comp);
+            const countEl = document.getElementById('count_' + comp);
+            if (!container) return;
+
+            const list = (componentPhotos[comp] && componentPhotos[comp].specifics) || [];
+            if (countEl) {
+                countEl.textContent = list.length > 0 ? `(${list.length} foto${list.length > 1 ? 's' : ''})` : '';
+            }
+
+            if (list.length === 0) {
+                container.innerHTML = '';
+                return;
+            }
+
+            let html = '<div style="display:flex; flex-wrap:wrap; gap:8px;">';
+            list.forEach((photo, idx) => {
+                html += `
+                    <div class="photo-thumb">
+                        <img src="${photo.dataUrl}" alt="Detalle ${idx + 1}">
+                        <button type="button" class="btn-remove-thumb" onclick="quitarFotoDetalle('${comp}', ${idx})" title="Eliminar foto">✕</button>
+                    </div>`;
+            });
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        // ===== QUITAR FOTOS =====
+        function quitarFotoGeneral(comp) {
+            if (componentPhotos[comp]) {
+                componentPhotos[comp].general = null;
+                renderGeneralPhoto(comp);
+            }
+        }
+
+        function quitarFotoDetalle(comp, index) {
+            if (componentPhotos[comp] && componentPhotos[comp].specifics) {
+                componentPhotos[comp].specifics.splice(index, 1);
+                renderSpecificPhotos(comp);
+            }
+        }
+
+        // ===== ENVIAR FOTOS EXTERNAS A DRIVE =====
+        async function enviarFotosExternas() {
+            if (!selectedPcName) { alert("No hay PC seleccionada"); return; }
+
+            const statusEl = document.getElementById('statusFotos');
+            showStatus(statusEl, 'info', '⏳ Procesando fotos...');
+
+            const btn = document.getElementById('btnSubmitFotos');
+            btn.disabled = true;
+
+            let filesArray = [];
+
+            COMPONENTS.forEach(comp => {
+                const item = componentPhotos[comp.id];
+                if (!item) return;
+
+                // 1. Foto General
+                if (item.general) {
+                    const ext = (item.general.mimeType.split('/')[1] || 'jpg').replace('jpeg', 'jpg');
+                    filesArray.push({
+                        name: `foto_${comp.id}_general.${ext}`,
+                        mimeType: item.general.mimeType,
+                        base64: item.general.base64
+                    });
+                }
+
+                // 2. Fotos Específicas / Detalles
+                item.specifics.forEach((photo, idx) => {
+                    const ext = (photo.mimeType.split('/')[1] || 'jpg').replace('jpeg', 'jpg');
+                    filesArray.push({
+                        name: `foto_${comp.id}_detalle_${idx + 1}.${ext}`,
+                        mimeType: photo.mimeType,
+                        base64: photo.base64
+                    });
+                });
+            });
+
+            if (filesArray.length === 0) {
+                alert("Agrega al menos una foto (general o de detalle).");
+                btn.disabled = false;
+                statusEl.classList.remove('show');
+                return;
+            }
+
+            showStatus(statusEl, 'info', `📤 Subiendo ${filesArray.length} foto${filesArray.length > 1 ? 's' : ''} a Google Drive (${selectedPcName})...`);
+
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ pcName: selectedPcName, files: filesArray })
+                });
+                showStatus(statusEl, 'success', `✅ ¡${filesArray.length} foto${filesArray.length > 1 ? 's' : ''} subida${filesArray.length > 1 ? 's' : ''} con éxito a ${selectedPcName}!`);
+            } catch (error) {
+                showStatus(statusEl, 'error', '❌ Error de conexión al subir fotos.');
+                console.error(error);
+            }
+
+            btn.disabled = false;
+        }
+
+        // ===== UTILIDADES =====
+        function getBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        function showStatus(el, type, message) {
+            el.className = 'status show ' + type;
+            el.textContent = message;
+        }
+    </script>
+</body>
+
+</html>
