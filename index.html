@@ -795,7 +795,7 @@
                     </div>
                     <div class="photos-container" id="specifics_teclado"></div>
                     <button type="button" class="btn-add-specific" onclick="capturarFoto('teclado', 'specific')">
-                        ➕ Agregar Foto de Detalle
+                        📷 Tomar Foto de Detalle
                     </button>
                 </div>
             </div>
@@ -814,7 +814,7 @@
                     </div>
                     <div class="photos-container" id="specifics_mouse"></div>
                     <button type="button" class="btn-add-specific" onclick="capturarFoto('mouse', 'specific')">
-                        ➕ Agregar Foto de Detalle
+                        📷 Tomar Foto de Detalle
                     </button>
                 </div>
             </div>
@@ -833,7 +833,7 @@
                     </div>
                     <div class="photos-container" id="specifics_monitor"></div>
                     <button type="button" class="btn-add-specific" onclick="capturarFoto('monitor', 'specific')">
-                        ➕ Agregar Foto de Detalle
+                        📷 Tomar Foto de Detalle
                     </button>
                 </div>
             </div>
@@ -852,7 +852,7 @@
                     </div>
                     <div class="photos-container" id="specifics_pc"></div>
                     <button type="button" class="btn-add-specific" onclick="capturarFoto('pc', 'specific')">
-                        ➕ Agregar Foto de Detalle
+                        📷 Tomar Foto de Detalle
                     </button>
                 </div>
             </div>
@@ -871,7 +871,7 @@
                     </div>
                     <div class="photos-container" id="specifics_impresora"></div>
                     <button type="button" class="btn-add-specific" onclick="capturarFoto('impresora', 'specific')">
-                        ➕ Agregar Foto de Detalle
+                        📷 Tomar Foto de Detalle
                     </button>
                 </div>
             </div>
@@ -890,14 +890,14 @@
                     </div>
                     <div class="photos-container" id="specifics_webcam"></div>
                     <button type="button" class="btn-add-specific" onclick="capturarFoto('webcam', 'specific')">
-                        ➕ Agregar Foto de Detalle
+                        📷 Tomar Foto de Detalle
                     </button>
                 </div>
             </div>
 
-            <!-- Inputs ocultos para captura -->
+            <!-- Inputs ocultos para captura directa con cámara -->
             <input type="file" id="hiddenCameraInputGeneral" accept="image/*" capture="environment" style="display:none;">
-            <input type="file" id="hiddenCameraInputSpecific" accept="image/*" multiple style="display:none;">
+            <input type="file" id="hiddenCameraInputSpecific" accept="image/*" capture="environment" style="display:none;">
 
             <button class="btn-submit primary" onclick="enviarFotosExternas()" id="btnSubmitFotos">
                 📤 Subir Fotos a esta PC
@@ -1116,7 +1116,7 @@
             { id: 'teclado', name: 'Teclado' },
             { id: 'mouse', name: 'Mouse' },
             { id: 'monitor', name: 'Monitor' },
-            { id: 'pc', name: 'PC / CPU' },
+            { id: 'pc', name: 'PC' },
             { id: 'impresora', name: 'Impresora' },
             { id: 'webcam', name: 'Webcam' }
         ];
@@ -1286,11 +1286,14 @@
                 const item = componentPhotos[comp.id];
                 if (!item) return;
 
+                const subfolderName = `${comp.name} - ${selectedPcName}`;
+
                 // 1. Foto General
                 if (item.general) {
                     const ext = (item.general.mimeType.split('/')[1] || 'jpg').replace('jpeg', 'jpg');
                     filesArray.push({
                         name: `foto_${comp.id}_general.${ext}`,
+                        subfolder: subfolderName,
                         mimeType: item.general.mimeType,
                         base64: item.general.base64
                     });
@@ -1301,6 +1304,7 @@
                     const ext = (photo.mimeType.split('/')[1] || 'jpg').replace('jpeg', 'jpg');
                     filesArray.push({
                         name: `foto_${comp.id}_detalle_${idx + 1}.${ext}`,
+                        subfolder: subfolderName,
                         mimeType: photo.mimeType,
                         base64: photo.base64
                     });
