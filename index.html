@@ -572,7 +572,95 @@
             transform: translateY(-1px);
         }
 
-        .pc-list {
+        /* Barra de estadísticas y resumen en Historial */
+        .historial-stats-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .stat-pill {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            color: #475569;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+
+        .stat-pill .stat-num {
+            font-weight: 800;
+            font-size: 0.88rem;
+            color: #0f172a;
+        }
+
+        .stat-pill.success {
+            background: #f0fdf4;
+            border-color: #bbf7d0;
+            color: #15803d;
+        }
+        .stat-pill.success .stat-num { color: #16a34a; }
+
+        .stat-pill.warning {
+            background: #fffbeb;
+            border-color: #fde68a;
+            color: #b45309;
+        }
+        .stat-pill.warning .stat-num { color: #d97706; }
+
+        .stat-pill.info {
+            background: #f0f9ff;
+            border-color: #bae6fd;
+            color: #0369a1;
+        }
+        .stat-pill.info .stat-num { color: #0284c7; }
+
+        .stat-pill.primary {
+            background: #eef2ff;
+            border-color: #c7d2fe;
+            color: #3730a3;
+        }
+        .stat-pill.primary .stat-num { color: #4f46e5; }
+
+        /* Pestañas de filtro en Historial */
+        .historial-filter-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .filter-tab-btn {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .filter-tab-btn:hover {
+            background: #e2e8f0;
+            color: #0f172a;
+        }
+
+        .filter-tab-btn.active {
+            background: #0f3460;
+            border-color: #0f3460;
+            color: #ffffff;
+            box-shadow: 0 2px 6px rgba(15, 52, 96, 0.25);
+        }
+
+        .pc-list, .pc-grid {
             display: flex;
             flex-direction: column;
             gap: 8px;
@@ -581,47 +669,204 @@
         .pc-card {
             background: #fff;
             border-radius: 12px;
-            padding: 14px 16px;
-            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+            padding: 12px 16px;
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
             cursor: pointer;
-            transition: all 0.25s ease;
-            border-left: 4px solid #c5cae9;
+            transition: all 0.2s ease;
+            border-left: 4px solid #cbd5e1;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 12px;
         }
 
         .pc-card:hover {
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.09);
             transform: translateX(2px);
-            border-left-color: #0f3460;
         }
 
-        .pc-card .pc-info {
+        .pc-card.is-registered {
+            border-left-color: #10b981;
+            background: #fcfffd;
+        }
+
+        .pc-card.is-pending {
+            border-left-color: #f59e0b;
+        }
+
+        .pc-card-left {
             display: flex;
-            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+            flex: 1;
         }
 
-        .pc-card .pc-name {
-            font-weight: 700;
-            font-size: 1rem;
-            color: #1a1a2e;
-        }
-
-        .pc-card .pc-date {
-            font-size: 0.78rem;
-            color: #888;
+        .pc-card-icon {
+            font-size: 1.6rem;
+            line-height: 1;
             margin-top: 2px;
         }
 
-        .pc-card .pc-arrow {
+        .pc-card-body {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            flex: 1;
+        }
+
+        .pc-card-row1 {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .pc-card-code {
+            font-size: 0.96rem;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .pc-card-user {
+            font-size: 0.84rem;
+            font-weight: 600;
+            color: #334155;
+        }
+
+        .pc-card-details {
+            font-size: 0.74rem;
+            color: #64748b;
+        }
+
+        .pc-card-arrow {
             font-size: 1.2rem;
-            color: #bbb;
+            color: #94a3b8;
             transition: color 0.2s;
         }
 
-        .pc-card:hover .pc-arrow {
+        .pc-card:hover .pc-card-arrow {
             color: #0f3460;
+        }
+
+        /* Badges de estado */
+        .badge-status-registered {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 12px;
+            background: #dcfce7;
+            color: #15803d;
+            border: 1px solid #86efac;
+        }
+
+        .badge-status-pending {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 12px;
+            background: #fef3c7;
+            color: #b45309;
+            border: 1px solid #fde68a;
+        }
+
+        .tag-registered {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: #dcfce7;
+            color: #15803d;
+            border: 1px solid #86efac;
+            margin-left: 6px;
+        }
+
+        .tag-pending {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: #fef3c7;
+            color: #b45309;
+            border: 1px solid #fde68a;
+            margin-left: 6px;
+        }
+
+        .drive-status-alert {
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.84rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .drive-status-alert.registered {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #86efac;
+        }
+
+        .drive-status-alert.pending {
+            background: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fcd34d;
+        }
+
+        /* Toggle manual de tipo de dispositivo en panel de fotos */
+        .device-type-toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #f1f5f9;
+            padding: 8px 12px;
+            border-radius: 10px;
+            margin-bottom: 14px;
+            border: 1px solid #e2e8f0;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .device-type-toggle-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #475569;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .device-type-toggle-buttons {
+            display: flex;
+            gap: 6px;
+        }
+
+        .btn-toggle-type {
+            background: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-toggle-type.active {
+            background: #0f3460;
+            border-color: #0f3460;
+            color: #ffffff;
+            box-shadow: 0 2px 6px rgba(15, 52, 96, 0.25);
         }
 
         .empty-state {
@@ -1662,144 +1907,59 @@
                     🔄 Cargar PCs Registradas
                 </button>
             </div>
+
+            <!-- Resumen y estadísticas de registro -->
+            <div id="historialStatsBar" class="historial-stats-bar" style="display:none;"></div>
+
+            <!-- Pestañas de filtrado rápido -->
+            <div id="historialFilterTabs" class="historial-filter-tabs" style="display:none;">
+                <button type="button" class="filter-tab-btn active" data-filter="all" onclick="setHistorialFiltro('all')">Todos</button>
+                <button type="button" class="filter-tab-btn" data-filter="registered" onclick="setHistorialFiltro('registered')">✅ En Drive</button>
+                <button type="button" class="filter-tab-btn" data-filter="pending" onclick="setHistorialFiltro('pending')">⏳ Pendientes</button>
+                <button type="button" class="filter-tab-btn" data-filter="laptop" onclick="setHistorialFiltro('laptop')">💻 Laptops</button>
+                <button type="button" class="filter-tab-btn" data-filter="compu" onclick="setHistorialFiltro('compu')">🖥️ Desktops / WS</button>
+            </div>
+
             <div id="historialFilterWrapper" style="margin-bottom:14px; display:none;">
                 <input type="text" id="historialFilterInput" class="equipment-search-input" 
-                       placeholder="🔍 Filtrar PCs registradas por código o nombre..." oninput="filtrarHistorial()">
+                       placeholder="🔍 Filtrar por código, usuario, cargo o tipo..." oninput="filtrarHistorial()">
             </div>
 
             <div id="pcListContainer">
                 <div class="empty-state">
                     <div class="icon">📂</div>
-                    <p>Presiona el botón para cargar<br>las PCs ya registradas</p>
+                    <p>Presiona el botón para cargar<br>los equipos y su estado en Drive</p>
                 </div>
             </div>
         </div>
 
-        <!-- Panel de fotos externas (se muestra al seleccionar una PC) -->
+        <!-- Panel de fotos externas (se muestra al seleccionar una PC o Laptop) -->
         <div id="photoPanel" class="photo-panel">
             <div class="panel-header">
-                <button class="btn-back" onclick="volverALista()">←</button>
-                <div>
+                <button class="btn-back" onclick="volverALista()" title="Volver a la lista de equipos">←</button>
+                <div style="flex:1;">
                     <div class="title" id="panelPcName">PC_001</div>
-                    <div class="subtitle">Agregar fotos externas</div>
+                    <div class="subtitle" id="panelPcSubtitle">Agregar fotos externas</div>
+                </div>
+                <div id="panelDeviceBadge" style="margin-left:auto;"></div>
+            </div>
+
+            <!-- Selector / Toggle dinámico de tipo de dispositivo -->
+            <div class="device-type-toggle-container">
+                <div class="device-type-toggle-label">
+                    <span>Tipo detectado:</span>
+                    <strong id="currentTypeLabel">COMPU (Desktop/WS)</strong>
+                </div>
+                <div class="device-type-toggle-buttons">
+                    <button type="button" class="btn-toggle-type" id="btnToggleLaptop" onclick="cambiarTipoDispositivoManual('laptop')">💻 Laptop</button>
+                    <button type="button" class="btn-toggle-type" id="btnToggleCompu" onclick="cambiarTipoDispositivoManual('compu')">🖥️ Compu</button>
                 </div>
             </div>
 
-            <div class="section-title">📷 Fotos Externas por Componente</div>
+            <div class="section-title" id="panelSectionTitle">📷 Fotos Externas por Componente</div>
 
-            <!-- Componente: Teclado -->
-            <div class="component-card">
-                <div class="component-card-header">⌨️ Teclado</div>
-                <div class="photo-subgroup">
-                    <div class="photo-subgroup-label">📸 Foto General (vista completa)</div>
-                    <div id="general_teclado"></div>
-                </div>
-                <div class="photo-subgroup">
-                    <div class="photo-subgroup-label">
-                        <span>🔍 Fotos Específicas / Detalles</span>
-                        <span class="photo-count" id="count_teclado"></span>
-                    </div>
-                    <div class="photos-container" id="specifics_teclado"></div>
-                    <button type="button" class="btn-add-specific" onclick="capturarFoto('teclado', 'specific')">
-                        📷 Tomar Foto de Detalle
-                    </button>
-                </div>
-            </div>
-
-            <!-- Componente: Mouse -->
-            <div class="component-card">
-                <div class="component-card-header">🖱️ Mouse</div>
-                <div class="photo-subgroup">
-                    <div class="photo-subgroup-label">📸 Foto General (vista completa)</div>
-                    <div id="general_mouse"></div>
-                </div>
-                <div class="photo-subgroup">
-                    <div class="photo-subgroup-label">
-                        <span>🔍 Fotos Específicas / Detalles</span>
-                        <span class="photo-count" id="count_mouse"></span>
-                    </div>
-                    <div class="photos-container" id="specifics_mouse"></div>
-                    <button type="button" class="btn-add-specific" onclick="capturarFoto('mouse', 'specific')">
-                        📷 Tomar Foto de Detalle
-                    </button>
-                </div>
-            </div>
-
-            <!-- Componente: Monitor -->
-            <div class="component-card">
-                <div class="component-card-header">🖥️ Monitor</div>
-                <div class="photo-subgroup">
-                    <div class="photo-subgroup-label">📸 Foto General (vista completa)</div>
-                    <div id="general_monitor"></div>
-                </div>
-                <div class="photo-subgroup">
-                    <div class="photo-subgroup-label">
-                        <span>🔍 Fotos Específicas / Detalles</span>
-                        <span class="photo-count" id="count_monitor"></span>
-                    </div>
-                    <div class="photos-container" id="specifics_monitor"></div>
-                    <button type="button" class="btn-add-specific" onclick="capturarFoto('monitor', 'specific')">
-                        📷 Tomar Foto de Detalle
-                    </button>
-                </div>
-            </div>
-
-            <!-- Componente: PC / CPU -->
-            <div class="component-card">
-                <div class="component-card-header">💻 PC / CPU</div>
-                <div class="photo-subgroup">
-                    <div class="photo-subgroup-label">📸 Foto General (vista completa)</div>
-                    <div id="general_pc"></div>
-                </div>
-                <div class="photo-subgroup">
-                    <div class="photo-subgroup-label">
-                        <span>🔍 Fotos Específicas / Detalles</span>
-                        <span class="photo-count" id="count_pc"></span>
-                    </div>
-                    <div class="photos-container" id="specifics_pc"></div>
-                    <button type="button" class="btn-add-specific" onclick="capturarFoto('pc', 'specific')">
-                        📷 Tomar Foto de Detalle
-                    </button>
-                </div>
-            </div>
-
-            <!-- Componente: Impresora -->
-            <div class="component-card">
-                <div class="component-card-header">🖨️ Impresora</div>
-                <div class="photo-subgroup">
-                    <div class="photo-subgroup-label">📸 Foto General (vista completa)</div>
-                    <div id="general_impresora"></div>
-                </div>
-                <div class="photo-subgroup">
-                    <div class="photo-subgroup-label">
-                        <span>🔍 Fotos Específicas / Detalles</span>
-                        <span class="photo-count" id="count_impresora"></span>
-                    </div>
-                    <div class="photos-container" id="specifics_impresora"></div>
-                    <button type="button" class="btn-add-specific" onclick="capturarFoto('impresora', 'specific')">
-                        📷 Tomar Foto de Detalle
-                    </button>
-                </div>
-            </div>
-
-            <!-- Componente: Webcam -->
-            <div class="component-card">
-                <div class="component-card-header">📹 Cámara Web / Webcam</div>
-                <div class="photo-subgroup">
-                    <div class="photo-subgroup-label">📸 Foto General (vista completa)</div>
-                    <div id="general_webcam"></div>
-                </div>
-                <div class="photo-subgroup">
-                    <div class="photo-subgroup-label">
-                        <span>🔍 Fotos Específicas / Detalles</span>
-                        <span class="photo-count" id="count_webcam"></span>
-                    </div>
-                    <div class="photos-container" id="specifics_webcam"></div>
-                    <button type="button" class="btn-add-specific" onclick="capturarFoto('webcam', 'specific')">
-                        📷 Tomar Foto de Detalle
-                    </button>
-                </div>
-            </div>
+            <!-- Contenedor dinámico de componentes según Laptop o Compu -->
+            <div id="componentsContainer"></div>
 
             <!-- Inputs ocultos para captura directa con cámara -->
             <input type="file" id="hiddenCameraInputGeneral" accept="image/*" capture="environment" style="display:none;">
@@ -1846,6 +2006,65 @@
         let selectedEquipment = null;
         let lastSearchResults = [];
 
+        // ===== MAPAS Y ESTADOS DE REGISTRO EN DRIVE & DISPOSITIVOS =====
+        let DRIVE_REGISTERED_MAP = {}; // Mapa: CODIGO -> Date o true
+        let HISTORIAL_FILTER = 'all';  // 'all' | 'registered' | 'pending' | 'laptop' | 'compu'
+        let CURRENT_PHOTO_MODE = 'compu'; // 'laptop' | 'compu'
+        let HISTORIAL_FULL_LIST = [];  // Lista unificada para filtrar y buscar
+
+        // Componentes para Computadoras de Escritorio / Workstations / Desktops
+        const COMPONENTS_PC = [
+            { id: 'teclado', name: 'Teclado', icon: '⌨️', descGeneral: '📸 Foto General (vista completa)', descDetalle: '🔍 Fotos Específicas / Detalles' },
+            { id: 'mouse', name: 'Mouse', icon: '🖱️', descGeneral: '📸 Foto General (vista completa)', descDetalle: '🔍 Fotos Específicas / Detalles' },
+            { id: 'monitor', name: 'Monitor', icon: '🖥️', descGeneral: '📸 Foto General (vista completa)', descDetalle: '🔍 Fotos Específicas / Detalles' },
+            { id: 'pc', name: 'PC / CPU', icon: '💻', descGeneral: '📸 Foto General (vista completa)', descDetalle: '🔍 Fotos Específicas / Detalles' },
+            { id: 'impresora', name: 'Impresora', icon: '🖨️', descGeneral: '📸 Foto General (vista completa)', descDetalle: '🔍 Fotos Específicas / Detalles' },
+            { id: 'webcam', name: 'Cámara Web / Webcam', icon: '📹', descGeneral: '📸 Foto General (vista completa)', descDetalle: '🔍 Fotos Específicas / Detalles' }
+        ];
+
+        // Componentes simplificados exclusivamente para Laptops
+        // Solo foto general de laptop + específicos, y foto general de cargador + específicos
+        const COMPONENTS_LAPTOP = [
+            { id: 'laptop', name: 'Laptop', icon: '💻', descGeneral: '📸 Foto General de la Laptop (vista completa frontal y teclado abierta)', descDetalle: '🔍 Fotos Específicas / Detalles (pantalla, puertos laterales, etiqueta con serie/modelo)' },
+            { id: 'cargador', name: 'Cargador', icon: '🔌', descGeneral: '📸 Foto General del Cargador (adaptador y cable completo)', descDetalle: '🔍 Fotos Específicas / Detalles (etiqueta de especificaciones y punta del conector)' }
+        ];
+
+        // Determina si un tipo de equipo es Laptop (TIPO = 'LAPTOP' o afines)
+        // 'WORKSTATION' y 'DESKTOP' se clasifican como Computadora
+        function esLaptop(tipo) {
+            if (!tipo) return false;
+            const t = String(tipo).trim().toUpperCase();
+            return t.includes('LAPTOP') || t.includes('PORTATIL') || t.includes('NOTEBOOK');
+        }
+
+        // Obtiene el identificador principal de un equipo (prioriza ELS Nuevo si existe; si es SN o '-', usa ELS Antiguo o Cuenta)
+        function obtenerCodigoPrincipal(eq) {
+            if (!eq) return 'PC';
+            const n = String(eq.elsNuevo || '').trim();
+            if (n && n.toUpperCase() !== 'SN' && n !== '-') return n;
+
+            const a = String(eq.elsAntiguo || '').trim();
+            if (a && a.toUpperCase() !== 'SN' && a !== '-') return a;
+
+            const c = String(eq.cuenta || '').trim();
+            if (c && c.toUpperCase() !== 'SN' && c !== '-') return c;
+
+            return n || a || 'EQUIPO';
+        }
+
+        // Verifica si un equipo ya tiene carpeta creada en Google Drive o auditoría completada
+        function estaRegistradoEnDrive(eq) {
+            if (!eq) return false;
+            const n1 = (eq.elsNuevo || '').trim().toUpperCase();
+            const n2 = (eq.elsAntiguo || '').trim().toUpperCase();
+            const n3 = (eq.cuenta || '').trim().toUpperCase();
+            if (n1 && n1 !== 'SN' && n1 !== '-' && DRIVE_REGISTERED_MAP[n1]) return true;
+            if (n2 && n2 !== 'SN' && n2 !== '-' && DRIVE_REGISTERED_MAP[n2]) return true;
+            if (n3 && n3 !== 'SN' && n3 !== '-' && DRIVE_REGISTERED_MAP[n3]) return true;
+            if (eq.estado && eq.estado.toUpperCase().includes('REGISTRADO')) return true;
+            return false;
+        }
+
         // ===== SINCRONIZACIÓN EN VIVO CON GOOGLE SHEETS (JSONP - SIN CORS) =====
         function sincronizarConGoogleSheets(notificar = false) {
             const statusEl = document.getElementById('sheetSyncStatus');
@@ -1876,19 +2095,38 @@
                         const c = rows[i].c || [];
                         const val = (idx) => (c[idx] && c[idx].v != null ? String(c[idx].v).trim() : '');
                         const elsNuevo = val(1);
-                        if (!elsNuevo) continue;
+                        const elsAntiguo = val(2);
+                        const cuenta = val(4);
+
+                        // Si no tiene ni elsNuevo ni elsAntiguo ni cuenta, no es una fila válida
+                        if (!elsNuevo && !elsAntiguo && !cuenta) continue;
+
+                        const estado = val(9); // Columna 10: ESTADO AUDITORÍA
 
                         items.push({
-                            tipo: val(0),
-                            elsNuevo: elsNuevo,
-                            elsAntiguo: val(2),
+                            tipo: val(0) || 'NUEVO',
+                            elsNuevo: elsNuevo || 'SN',
+                            elsAntiguo: elsAntiguo || '-',
                             grupo: val(3),
-                            cuenta: val(4),
+                            cuenta: cuenta || '-',
                             usuario: val(5),
                             cargo: val(6),
                             gerencia: val(7),
-                            departamento: val(8)
+                            departamento: val(8),
+                            estado: estado
                         });
+
+                        if (estado && estado.toUpperCase().includes('REGISTRADO')) {
+                            if (elsNuevo && elsNuevo.toUpperCase() !== 'SN' && elsNuevo !== '-') {
+                                DRIVE_REGISTERED_MAP[elsNuevo.toUpperCase()] = true;
+                            }
+                            if (elsAntiguo && elsAntiguo.toUpperCase() !== 'SN' && elsAntiguo !== '-') {
+                                DRIVE_REGISTERED_MAP[elsAntiguo.toUpperCase()] = true;
+                            }
+                            if (cuenta && cuenta.toUpperCase() !== 'SN' && cuenta !== '-') {
+                                DRIVE_REGISTERED_MAP[cuenta.toUpperCase()] = true;
+                            }
+                        }
                     }
 
                     if (items.length > 0) {
@@ -1965,20 +2203,40 @@
             let html = '';
             const slice = results.slice(0, 25);
             slice.forEach((item, index) => {
+                const isLap = esLaptop(item.tipo);
+                const isReg = estaRegistradoEnDrive(item);
                 const badgeClass = 'badge-' + (item.tipo || '').toLowerCase();
-                const antiguoStr = item.elsAntiguo && item.elsAntiguo !== '-' ? `<span class="result-antiguo">(Antiguo: ${item.elsAntiguo})</span>` : '';
-                const usuarioStr = item.usuario ? item.usuario : '<span style="color:#94a3b8; font-style:italic;">(Sin usuario asignado)</span>';
-                const cargoStr = item.cargo ? `<div class="result-row-cargo">💼 ${item.cargo}</div>` : '';
-                const deptoStr = [item.gerencia, item.departamento].filter(Boolean).join(' • ');
+                const displayCode = obtenerCodigoPrincipal(item);
+                
+                let subCodeStr = '';
+                if (item.elsNuevo === 'SN' || !item.elsNuevo) {
+                    subCodeStr = `<span class="result-antiguo">(Código: ${item.elsAntiguo} • ELS Nuevo: Sin Asignar)</span>`;
+                } else if (item.elsAntiguo && item.elsAntiguo !== '-' && item.elsAntiguo !== item.elsNuevo) {
+                    subCodeStr = `<span class="result-antiguo">(Antiguo: ${item.elsAntiguo})</span>`;
+                }
+
+                const usuarioStr = (item.usuario && item.usuario !== 'SN') 
+                    ? item.usuario 
+                    : '<span style="color:#94a3b8; font-style:italic;">(Equipo nuevo / Sin usuario asignado)</span>';
+                
+                const cargoStr = (item.cargo && item.cargo !== 'SN') ? `<div class="result-row-cargo">💼 ${item.cargo}</div>` : '';
+                const deptoStr = [item.gerencia, item.departamento].filter(val => val && val !== 'SN').join(' • ');
+
+                const statusTag = isReg 
+                    ? `<span class="tag-registered">✅ En Drive</span>` 
+                    : `<span class="tag-pending">⏳ Pendiente</span>`;
+
+                const typeIcon = isLap ? '💻 Laptop' : (item.tipo || '🖥️ Compu');
 
                 html += `
                     <div class="equipment-result-item" onclick="seleccionarEquipo(${index})">
                         <div class="result-row-1">
                             <div>
-                                <span class="result-els">${item.elsNuevo}</span>
-                                ${antiguoStr}
+                                <span class="result-els">${displayCode}</span>
+                                ${subCodeStr}
+                                ${statusTag}
                             </div>
-                            <span class="result-badge ${badgeClass}">${item.tipo}</span>
+                            <span class="result-badge ${badgeClass}">${typeIcon}</span>
                         </div>
                         <div class="result-row-2">👤 ${usuarioStr}</div>
                         ${cargoStr}
@@ -2010,25 +2268,33 @@
                 originalElsAntiguo: item.elsAntiguo
             };
 
-            // Determinar identificador de carpeta para Google Drive
-            let pcIdentifier = item.elsNuevo;
-            if (!pcIdentifier || pcIdentifier === 'SN' || pcIdentifier === '-') {
-                pcIdentifier = item.elsAntiguo && item.elsAntiguo !== '-' ? item.elsAntiguo : (item.cuenta || 'PC');
-            }
+            // Determinar identificador de carpeta para Google Drive (si elsNuevo es SN, usar elsAntiguo como ELS1136 o ELS0863)
+            let pcIdentifier = obtenerCodigoPrincipal(item);
 
             document.getElementById('pcName').value = pcIdentifier;
-            document.getElementById('equipmentSearchInput').value = `${item.elsNuevo} - ${item.usuario || item.cuenta}`;
+            const userLabel = item.usuario && item.usuario !== 'SN' ? item.usuario : (item.cargo && item.cargo !== 'SN' ? item.cargo : 'Equipo Nuevo');
+            document.getElementById('equipmentSearchInput').value = `${pcIdentifier} - ${userLabel}`;
             document.getElementById('equipmentResults').style.display = 'none';
+
+            // Comprobar estado en Google Drive
+            const isReg = estaRegistradoEnDrive(item);
+            const isLap = esLaptop(item.tipo);
+            const alertBanner = isReg
+                ? `<div class="drive-status-alert registered">✅ <strong>Registrado en Google Drive:</strong> Este equipo ya cuenta con carpeta creada y auditoría registrada. Los cambios actualizarán sus datos y resaltarán la fila en Google Sheets.</div>`
+                : `<div class="drive-status-alert pending">⏳ <strong>Pendiente de Registro:</strong> Este equipo aún no tiene carpeta creada en Google Drive. Al subir capturas o fotos se creará la carpeta y se registrará automáticamente en el Excel.</div>`;
 
             // Mostrar ficha de campos 100% editables
             const card = document.getElementById('selectedEquipmentCard');
             const badgeClass = 'badge-' + (item.tipo || '').toLowerCase();
+            const tipoLabel = isLap ? '💻 LAPTOP' : (item.tipo || '🖥️ COMPU');
 
             card.innerHTML = `
+                ${alertBanner}
+
                 <div class="selected-card-header">
                     <div class="selected-card-title">
                         <span>✏️ Ficha del Equipo</span>
-                        <span class="result-badge ${badgeClass}">${item.tipo || 'EQUIPO'}</span>
+                        <span class="result-badge ${badgeClass}">${tipoLabel}</span>
                     </div>
                     <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
                         <button type="button" class="btn-save-equipment" id="btnGuardarEquipo" onclick="guardarCambiosEnExcel()">💾 Guardar cambios</button>
@@ -2040,7 +2306,7 @@
 
                 <div class="editable-fields-grid">
                     <div class="edit-field-group">
-                        <label>TIPO:</label>
+                        <label>TIPO (WORKSTATION, DESKTOP o LAPTOP):</label>
                         <input type="text" class="edit-field-input" id="edit_tipo" value="${escapeAttr(item.tipo)}" oninput="actualizarDatoEquipo('tipo', this.value)">
                     </div>
 
@@ -2225,38 +2491,13 @@
             }
         });
 
-        // Sincronizar automáticamente con Google Sheets e inicializar capturas al cargar la página
+        // Inicializar sincronización con Google Sheets y cajas de captura al cargar
         window.addEventListener('DOMContentLoaded', function() {
             sincronizarConGoogleSheets(false);
             initCaptureBoxes();
         });
 
-        // Filtrado en vivo del Historial
-        let listaHistorialCompleta = [];
-        function filtrarHistorial() {
-            const query = (document.getElementById('historialFilterInput').value || '').trim().toLowerCase();
-            const container = document.getElementById('pcListContainer');
-
-            if (!listaHistorialCompleta.length) return;
-
-            const filtradas = listaHistorialCompleta.filter(item => {
-                const searchTxt = (item.name + ' ' + (item.info || '')).toLowerCase();
-                return searchTxt.includes(query);
-            });
-
-            if (filtradas.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="icon">🔍</div>
-                        <p>No se encontraron PCs registradas con "<strong>${query}</strong>"</p>
-                    </div>`;
-                return;
-            }
-
-            renderListaHistorial(filtradas);
-        }
-    // Imágenes pegadas en el formulario nuevo
-        let selectedPcName = '';    // PC seleccionada en historial
+        let selectedPcName = ''; // PC o Laptop seleccionada en historial
 
         // ===== TABS =====
         function showTab(tab) {
@@ -2645,7 +2886,8 @@
                     method: 'POST',
                     body: JSON.stringify(payload)
                 });
-                showStatus(statusEl, 'success', `✅ ¡${totalCapturas} captura(s) subidas con éxito a Google Drive (${pcName}) y datos sincronizados en Google Sheets!`);
+                showStatus(statusEl, 'success', `✅ ¡${totalCapturas} captura(s) subidas con éxito a Google Drive (${pcName})! Estado REGISTRADO actualizado y resaltado en verde en Google Sheets.`);
+                DRIVE_REGISTERED_MAP[pcName.toUpperCase()] = true;
             } catch (error) {
                 showStatus(statusEl, 'error', '❌ Error de conexión al subir capturas. Revisa la consola.');
                 console.error(error);
@@ -2654,77 +2896,72 @@
             btn.disabled = false;
         }
 
-        // ===== HISTORIAL =====
+        // ===== TAB 2: HISTORIAL Y VERIFICACIÓN EN GOOGLE DRIVE =====
         async function cargarHistorial() {
             const container = document.getElementById('pcListContainer');
             const filterWrapper = document.getElementById('historialFilterWrapper');
+            const filterTabs = document.getElementById('historialFilterTabs');
+            const statsBar = document.getElementById('historialStatsBar');
+
             if (filterWrapper) filterWrapper.style.display = 'none';
-            container.innerHTML = '<div class="loading"><div class="spinner"></div><br>Cargando PCs...</div>';
+            if (filterTabs) filterTabs.style.display = 'none';
+            if (statsBar) statsBar.style.display = 'none';
+
+            container.innerHTML = '<div class="loading"><div class="spinner"></div><br>Conectando con Google Drive y sincronizando con Google Sheets...</div>';
 
             try {
                 const url = SCRIPT_URL + '?action=list';
-                console.log('Fetching:', url);
+                console.log('Consultando Drive en:', url);
                 const response = await fetch(url);
                 const text = await response.text();
-                console.log('Response:', text);
 
                 let data;
                 try {
                     data = JSON.parse(text);
                 } catch (parseErr) {
-                    // Si no es JSON, el script no tiene doGet o hay error
                     container.innerHTML = `
                         <div class="empty-state">
                             <div class="icon">⚠️</div>
-                            <p><strong>El script no devolvió datos válidos.</strong></p>
+                            <p><strong>El script no devolvió datos válidos de Google Drive.</strong></p>
                             <p style="font-size:0.8rem; color:#888; margin-top:8px;">
-                                Asegúrate de:<br>
-                                1. Haber copiado el nuevo Code.gs al script<br>
-                                2. Haber puesto el ID correcto de tu carpeta<br>
-                                3. Haber hecho una <strong>nueva implementación</strong><br>
-                                4. Haber copiado la <strong>nueva URL</strong> aquí
+                                Verifica que hayas implementado la última versión de <code>electro.gs</code> como <strong>Nueva implementación</strong> en Apps Script.
                             </p>
                         </div>`;
                     console.error('No es JSON:', text.substring(0, 500));
                     return;
                 }
 
-                // Si el script devolvió un error
                 if (data.error) {
                     container.innerHTML = `
                         <div class="empty-state">
                             <div class="icon">⚠️</div>
-                            <p><strong>Error del script:</strong></p>
+                            <p><strong>Error de Google Apps Script:</strong></p>
                             <p style="font-size:0.8rem; color:#c62828; margin-top:6px; word-break:break-all;">${data.error}</p>
                         </div>`;
                     return;
                 }
 
-                if (!data.folders || data.folders.length === 0) {
-                    container.innerHTML = '<div class="empty-state"><div class="icon">📭</div><p>No hay PCs registradas aún</p></div>';
-                    return;
-                }
+                const driveFolders = data.folders || [];
+                
+                // Actualizar mapa global de registros en Drive
+                (data.registeredCodes || []).forEach(code => {
+                    DRIVE_REGISTERED_MAP[code.toUpperCase()] = true;
+                });
+                driveFolders.forEach(f => {
+                    DRIVE_REGISTERED_MAP[f.name.toUpperCase()] = f.date || true;
+                });
 
-                // Ordenar por fecha (más recientes primero)
-                data.folders.sort((a, b) => new Date(b.date) - new Date(a.date));
+                // Construir la lista completa y unificada (Drive + Base de Datos de Equipos)
+                HISTORIAL_FULL_LIST = construirListaHistorialCompleta(driveFolders);
 
-                let html = '<div class="pc-list">';
-                for (let folder of data.folders) {
-                    const date = new Date(folder.date);
-                    const dateStr = date.toLocaleDateString('es-PE', {
-                        day: '2-digit', month: 'short', year: 'numeric'
-                    });
-                    html += `
-                        <div class="pc-card" onclick="seleccionarPC('${folder.name}')">
-                            <div class="pc-info">
-                                <span class="pc-name">🖥️ ${folder.name}</span>
-                                <span class="pc-date">📅 ${dateStr}</span>
-                            </div>
-                            <span class="pc-arrow">→</span>
-                        </div>`;
-                }
-                html += '</div>';
-                container.innerHTML = html;
+                // Mostrar barra de estadísticas y controles
+                actualizarHistorialStats(HISTORIAL_FULL_LIST);
+                if (filterTabs) filterTabs.style.display = 'flex';
+                if (filterWrapper) filterWrapper.style.display = 'block';
+
+                // Renderizar según el filtro actual
+                filtrarHistorial();
+
             } catch (error) {
                 container.innerHTML = `
                     <div class="empty-state">
@@ -2732,87 +2969,306 @@
                         <p><strong>Error de conexión</strong></p>
                         <p style="font-size:0.8rem; color:#888; margin-top:6px;">${error.message}</p>
                     </div>`;
-                console.error('Error completo:', error);
+                console.error('Error completo en cargarHistorial:', error);
             }
         }
 
+        // Construir lista combinada con estado de auditoría
+        function construirListaHistorialCompleta(driveFolders) {
+            const driveFolderMap = {};
+            (driveFolders || []).forEach(f => {
+                driveFolderMap[f.name.toUpperCase()] = f;
+            });
 
+            const fullList = [];
+            const processedKeys = new Set();
+
+            // 1. Recorrer equipos de la base de datos Electrosur
+            EQUIPOS_DATABASE.forEach(eq => {
+                const primaryCode = obtenerCodigoPrincipal(eq);
+
+                // Clave única de deduplicación que distingue cada equipo, incluso cuando elsNuevo es 'SN'
+                const dedupKey = [
+                    (eq.elsNuevo && eq.elsNuevo !== 'SN' && eq.elsNuevo !== '-') ? eq.elsNuevo : '',
+                    (eq.elsAntiguo && eq.elsAntiguo !== '-' && eq.elsAntiguo !== 'SN') ? eq.elsAntiguo : '',
+                    (eq.cuenta && eq.cuenta !== '-' && eq.cuenta !== 'SN') ? eq.cuenta : ''
+                ].filter(Boolean).join('_') || primaryCode;
+
+                if (!dedupKey || processedKeys.has(dedupKey)) return;
+                processedKeys.add(dedupKey);
+
+                const kNuevo = (eq.elsNuevo && eq.elsNuevo !== 'SN' && eq.elsNuevo !== '-') ? eq.elsNuevo.toUpperCase() : null;
+                const kAntiguo = (eq.elsAntiguo && eq.elsAntiguo !== 'SN' && eq.elsAntiguo !== '-') ? eq.elsAntiguo.toUpperCase() : null;
+                const kCuenta = (eq.cuenta && eq.cuenta !== 'SN' && eq.cuenta !== '-') ? eq.cuenta.toUpperCase() : null;
+
+                const driveFolder = (kNuevo && driveFolderMap[kNuevo]) ||
+                                    (kAntiguo && driveFolderMap[kAntiguo]) ||
+                                    (kCuenta && driveFolderMap[kCuenta]);
+
+                const isRegistered = !!driveFolder || estaRegistradoEnDrive(eq);
+                const date = driveFolder ? driveFolder.date : null;
+                const isLap = esLaptop(eq.tipo);
+
+                fullList.push({
+                    name: primaryCode,
+                    elsNuevo: eq.elsNuevo,
+                    elsAntiguo: eq.elsAntiguo,
+                    usuario: eq.usuario,
+                    cargo: eq.cargo,
+                    cuenta: eq.cuenta,
+                    gerencia: eq.gerencia,
+                    departamento: eq.departamento,
+                    tipo: eq.tipo || (isLap ? 'LAPTOP' : 'DESKTOP'),
+                    isLaptop: isLap,
+                    isRegistered: isRegistered,
+                    date: date
+                });
+            });
+
+            // 2. Incorporar carpetas existentes en Drive que no figuren en la base
+            (driveFolders || []).forEach(f => {
+                const fUpper = f.name.trim().toUpperCase();
+                if (fUpper === 'SN' || fUpper === '-') return; // Ignorar carpetas llamadas 'SN'
+                
+                const exists = fullList.some(item => 
+                    item.name.toUpperCase() === fUpper ||
+                    (item.elsNuevo && item.elsNuevo.toUpperCase() === fUpper) ||
+                    (item.elsAntiguo && item.elsAntiguo.toUpperCase() === fUpper) ||
+                    (item.cuenta && item.cuenta.toUpperCase() === fUpper)
+                );
+                if (!exists) {
+                    fullList.push({
+                        name: f.name,
+                        elsNuevo: f.name,
+                        elsAntiguo: '-',
+                        usuario: '',
+                        cargo: '',
+                        cuenta: '',
+                        gerencia: '',
+                        departamento: '',
+                        tipo: 'DESKTOP',
+                        isLaptop: false,
+                        isRegistered: true,
+                        date: f.date
+                    });
+                }
+            });
+
+            // Ordenar: Registrados primero por fecha más reciente, luego pendientes
+            fullList.sort((a, b) => {
+                if (a.isRegistered && !b.isRegistered) return -1;
+                if (!a.isRegistered && b.isRegistered) return 1;
+                if (a.date && b.date) return new Date(b.date) - new Date(a.date);
+                return (a.name || '').localeCompare(b.name || '');
+            });
+
+            return fullList;
+        }
+
+        // Actualizar barra de estadísticas en la parte superior del historial
+        function actualizarHistorialStats(list) {
+            const statsBar = document.getElementById('historialStatsBar');
+            if (!statsBar) return;
+
+            const total = list.length;
+            const registered = list.filter(item => item.isRegistered).length;
+            const pending = total - registered;
+            const laptops = list.filter(item => item.isLaptop).length;
+            const compus = total - laptops;
+
+            statsBar.innerHTML = `
+                <div class="stat-pill primary">
+                    <span>Total Equipos:</span>
+                    <span class="stat-num">${total}</span>
+                </div>
+                <div class="stat-pill success">
+                    <span>✅ En Drive:</span>
+                    <span class="stat-num">${registered}</span>
+                </div>
+                <div class="stat-pill warning">
+                    <span>⏳ Pendientes:</span>
+                    <span class="stat-num">${pending}</span>
+                </div>
+                <div class="stat-pill info">
+                    <span>💻 Laptops:</span>
+                    <span class="stat-num">${laptops}</span>
+                </div>
+                <div class="stat-pill">
+                    <span>🖥️ Desktops/WS:</span>
+                    <span class="stat-num">${compus}</span>
+                </div>
+            `;
+            statsBar.style.display = 'flex';
+        }
+
+        // Cambio de pestaña de filtro rápido
+        function setHistorialFiltro(filtro) {
+            HISTORIAL_FILTER = filtro;
+            const tabBtns = document.querySelectorAll('.filter-tab-btn');
+            tabBtns.forEach(btn => {
+                if (btn.getAttribute('data-filter') === filtro) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            filtrarHistorial();
+        }
+
+        // Filtrado por buscador y filtro activo
+        function filtrarHistorial() {
+            const input = document.getElementById('historialFilterInput');
+            const term = (input ? input.value : '').trim().toLowerCase();
+
+            let filtered = HISTORIAL_FULL_LIST.filter(item => {
+                // Filtro de pestaña
+                if (HISTORIAL_FILTER === 'registered' && !item.isRegistered) return false;
+                if (HISTORIAL_FILTER === 'pending' && item.isRegistered) return false;
+                if (HISTORIAL_FILTER === 'laptop' && !item.isLaptop) return false;
+                if (HISTORIAL_FILTER === 'compu' && item.isLaptop) return false;
+
+                // Filtro por texto
+                if (term) {
+                    const searchString = [
+                        item.name,
+                        item.elsNuevo,
+                        item.elsAntiguo,
+                        item.usuario,
+                        item.cargo,
+                        item.cuenta,
+                        item.tipo
+                    ].join(' ').toLowerCase();
+                    if (!searchString.includes(term)) return false;
+                }
+
+                return true;
+            });
+
+            renderListaHistorial(filtered);
+        }
+
+        // Renderizado de las tarjetas de PC en el Historial
         function renderListaHistorial(list) {
             const container = document.getElementById('pcListContainer');
+            if (!container) return;
+
             if (list.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
-                        <div class="icon">📂</div>
-                        <p>No hay PCs registradas aún.</p>
+                        <div class="icon">🔍</div>
+                        <p>No se encontraron equipos para este filtro.</p>
                     </div>`;
                 return;
             }
 
-            let html = '<div class="pc-grid">';
-            for (let pc of list) {
-                const dateStr = pc.date ? new Date(pc.date).toLocaleDateString('es-PE', {
-                    day: '2-digit', month: 'short', year: 'numeric'
-                }) : '';
-                let userBadge = '';
-                if (pc.usuario) {
-                    userBadge += `<span style="display:block; font-size:0.78rem; color:#475569; margin-top:2px;">👤 ${pc.usuario}</span>`;
-                }
-                if (pc.cargo) {
-                    userBadge += `<span style="display:block; font-size:0.72rem; color:#0284c7;">💼 ${pc.cargo}</span>`;
+            let html = '<div class="pc-list">';
+            list.forEach(item => {
+                const isReg = item.isRegistered;
+                const cardClass = isReg ? 'pc-card is-registered' : 'pc-card is-pending';
+                const icon = item.isLaptop ? '💻' : '🖥️';
+                const statusBadge = isReg 
+                    ? `<span class="badge-status-registered">✅ En Drive</span>` 
+                    : `<span class="badge-status-pending">⏳ Pendiente</span>`;
+                const typeBadge = `<span class="result-badge badge-${(item.tipo || '').toLowerCase()}">${item.tipo || (item.isLaptop ? 'LAPTOP' : 'DESKTOP')}</span>`;
+                
+                let dateStr = '';
+                if (item.date) {
+                    const d = new Date(item.date);
+                    dateStr = ` • 📅 ${d.toLocaleDateString('es-PE', { day:'2-digit', month:'short', year:'numeric' })}`;
                 }
 
+                let infoCodigos = '';
+                if (item.elsNuevo === 'SN' || !item.elsNuevo) {
+                    infoCodigos = `<span style="font-size:0.75rem; color:#64748b;">(Nuevo: Sin Asignar • Ant: ${item.elsAntiguo})</span>`;
+                } else if (item.elsAntiguo && item.elsAntiguo !== '-' && item.elsAntiguo !== item.name) {
+                    infoCodigos = `<span style="font-size:0.75rem; color:#64748b;">(Ant: ${item.elsAntiguo})</span>`;
+                }
+
+                const userStr = item.usuario && item.usuario !== 'SN' 
+                    ? `👤 ${item.usuario}` 
+                    : '<span style="color:#94a3b8; font-style:italic;">(Equipo nuevo / Sin usuario asignado)</span>';
+                const cargoStr = item.cargo && item.cargo !== 'SN' ? ` • 💼 ${item.cargo}` : '';
+                const ctaStr = item.cuenta && item.cuenta !== 'SN' ? `🔑 ${item.cuenta}` : '🔑 Sin cuenta';
+
                 html += `
-                    <div class="pc-card" onclick="seleccionarPC('${pc.name}')">
-                        <span class="pc-icon">💻</span>
-                        <div class="pc-info">
-                            <span class="pc-name">${pc.name}</span>
-                            ${userBadge}
-                            <span class="pc-date">📅 ${dateStr}</span>
+                    <div class="${cardClass}" onclick="seleccionarPC('${item.name}')">
+                        <div class="pc-card-left">
+                            <span class="pc-card-icon">${icon}</span>
+                            <div class="pc-card-body">
+                                <div class="pc-card-row1">
+                                    <span class="pc-card-code">${item.name}</span>
+                                    ${infoCodigos}
+                                    ${typeBadge}
+                                    ${statusBadge}
+                                </div>
+                                <div class="pc-card-user">${userStr}</div>
+                                <div class="pc-card-details">
+                                    <span>${ctaStr}</span>
+                                    ${cargoStr}
+                                    ${dateStr}
+                                </div>
+                            </div>
                         </div>
-                        <span class="pc-arrow">→</span>
-                    </div>`;
-            }
+                        <span class="pc-card-arrow">→</span>
+                    </div>
+                `;
+            });
             html += '</div>';
             container.innerHTML = html;
         }
 
         // ===== ALMACÉN DE FOTOS POR COMPONENTE =====
-        // Estructura: { teclado: { general: null, specifics: [] }, ... }
+        // Estructura: { [comp.id]: { general: null, specifics: [] } }
         const componentPhotos = {};
-        const COMPONENTS = [
-            { id: 'teclado', name: 'Teclado' },
-            { id: 'mouse', name: 'Mouse' },
-            { id: 'monitor', name: 'Monitor' },
-            { id: 'pc', name: 'PC' },
-            { id: 'impresora', name: 'Impresora' },
-            { id: 'webcam', name: 'Webcam' }
-        ];
-
         let activeCapture = { comp: '', type: '' }; // type: 'general' | 'specific'
 
-        // ===== SELECCIONAR PC PARA FOTOS EXTERNAS =====
+        // Obtener la lista activa de componentes según si es Laptop o Compu
+        function getActiveComponentsList() {
+            return CURRENT_PHOTO_MODE === 'laptop' ? COMPONENTS_LAPTOP : COMPONENTS_PC;
+        }
+
+        // ===== SELECCIONAR PC/LAPTOP PARA FOTOS EXTERNAS =====
         function seleccionarPC(pcName) {
             selectedPcName = pcName;
-            // Buscar info del equipo para el encabezado
+
+            // Buscar info del equipo para el encabezado y detección de tipo
             const foundEq = EQUIPOS_DATABASE.find(eq => 
-                eq.elsNuevo.toUpperCase() === pcName.toUpperCase() ||
-                (eq.elsAntiguo && eq.elsAntiguo !== '-' && eq.elsAntiguo.toUpperCase() === pcName.toUpperCase())
-            );
+                (eq.elsNuevo && eq.elsNuevo !== 'SN' && eq.elsNuevo.toUpperCase() === pcName.toUpperCase()) ||
+                (eq.elsAntiguo && eq.elsAntiguo !== '-' && eq.elsAntiguo !== 'SN' && eq.elsAntiguo.toUpperCase() === pcName.toUpperCase()) ||
+                (eq.cuenta && eq.cuenta !== '-' && eq.cuenta !== 'SN' && eq.cuenta.toUpperCase() === pcName.toUpperCase())
+            ) || HISTORIAL_FULL_LIST.find(eq => eq.name.toUpperCase() === pcName.toUpperCase());
+
             const panelTitle = document.getElementById('panelPcName');
-            if (foundEq && foundEq.usuario) {
-                panelTitle.innerHTML = `${pcName} <span style="font-size:0.85rem; font-weight:normal; opacity:0.85; margin-left:8px;">(👤 ${foundEq.usuario})</span>`;
-            } else {
-                panelTitle.textContent = pcName;
+            const panelSubtitle = document.getElementById('panelPcSubtitle');
+
+            let tipoDetectado = foundEq ? (foundEq.tipo || '') : '';
+            let esLap = esLaptop(tipoDetectado);
+
+            if (panelTitle) {
+                if (foundEq && foundEq.usuario && foundEq.usuario !== 'SN') {
+                    panelTitle.innerHTML = `${pcName} <span style="font-size:0.85rem; font-weight:normal; opacity:0.85; margin-left:8px;">(👤 ${foundEq.usuario})</span>`;
+                } else {
+                    panelTitle.textContent = pcName;
+                }
             }
+
+            if (panelSubtitle) {
+                if (foundEq) {
+                    const details = [
+                        foundEq.cargo && foundEq.cargo !== 'SN' ? foundEq.cargo : null,
+                        (foundEq.departamento && foundEq.departamento !== 'SN') || (foundEq.gerencia && foundEq.gerencia !== 'SN') ? (foundEq.departamento || foundEq.gerencia) : null
+                    ].filter(Boolean).join(' • ');
+                    panelSubtitle.textContent = details || (foundEq.elsNuevo === 'SN' ? `Equipo Nuevo (${foundEq.tipo || 'COMPU'})` : (esLap ? 'Dispositivo Laptop' : 'Computadora de escritorio'));
+                } else {
+                    panelSubtitle.textContent = 'Agregar fotos externas';
+                }
+            }
+
             document.getElementById('pcListView').style.display = 'none';
             document.getElementById('photoPanel').classList.add('active');
 
-            // Limpiar y renderizar componentes
-            COMPONENTS.forEach(comp => {
-                componentPhotos[comp.id] = { general: null, specifics: [] };
-                renderGeneralPhoto(comp.id);
-                renderSpecificPhotos(comp.id);
-            });
+            // Configurar el modo adecuado (Laptop vs Compu) automáticamente
+            setPhotoPanelMode(esLap ? 'laptop' : 'compu', true);
 
             // Limpiar status
             const statusEl = document.getElementById('statusFotos');
@@ -2822,6 +3278,86 @@
         function volverALista() {
             document.getElementById('photoPanel').classList.remove('active');
             document.getElementById('pcListView').style.display = 'block';
+        }
+
+        // Cambiar dinámicamente entre modo Laptop y modo Compu
+        function setPhotoPanelMode(mode, autoDetected = false) {
+            CURRENT_PHOTO_MODE = mode === 'laptop' ? 'laptop' : 'compu';
+            
+            const btnLap = document.getElementById('btnToggleLaptop');
+            const btnCompu = document.getElementById('btnToggleCompu');
+            const typeLabel = document.getElementById('currentTypeLabel');
+            const badgeEl = document.getElementById('panelDeviceBadge');
+            const sectionTitle = document.getElementById('panelSectionTitle');
+
+            if (CURRENT_PHOTO_MODE === 'laptop') {
+                if (btnLap) btnLap.classList.add('active');
+                if (btnCompu) btnCompu.classList.remove('active');
+                if (typeLabel) typeLabel.innerHTML = '💻 LAPTOP (Portátil)' + (autoDetected ? ' <span style="font-size:0.75rem; color:#15803d; font-weight:700;">(Auto-detectado por Excel)</span>' : '');
+                if (badgeEl) badgeEl.innerHTML = '<span class="badge-status-registered" style="background:#e0f2fe; color:#0369a1; border-color:#7dd3fc;">💻 Laptop</span>';
+                if (sectionTitle) sectionTitle.innerHTML = '📷 Fotos Externas de Laptop (General + Cargador)';
+            } else {
+                if (btnLap) btnLap.classList.remove('active');
+                if (btnCompu) btnCompu.classList.add('active');
+                if (typeLabel) typeLabel.innerHTML = '🖥️ COMPU (Desktop / WS)' + (autoDetected ? ' <span style="font-size:0.75rem; color:#15803d; font-weight:700;">(Auto-detectado por Excel)</span>' : '');
+                if (badgeEl) badgeEl.innerHTML = '<span class="badge-status-registered" style="background:#f1f5f9; color:#334155; border-color:#cbd5e1;">🖥️ Compu</span>';
+                if (sectionTitle) sectionTitle.innerHTML = '📷 Fotos Externas por Componente (Teclado, Mouse, Monitor, PC, etc.)';
+            }
+
+            renderComponentCards();
+        }
+
+        function cambiarTipoDispositivoManual(mode) {
+            setPhotoPanelMode(mode, false);
+        }
+
+        // Renderizado dinámico de tarjetas de componentes
+        function renderComponentCards() {
+            const container = document.getElementById('componentsContainer');
+            if (!container) return;
+
+            const comps = getActiveComponentsList();
+            let html = '';
+
+            comps.forEach(comp => {
+                // Inicializar fotos si no existen
+                if (!componentPhotos[comp.id]) {
+                    componentPhotos[comp.id] = { general: null, specifics: [] };
+                }
+
+                const descGen = comp.descGeneral || '📸 Foto General (vista completa)';
+                const descDet = comp.descDetalle || '🔍 Fotos Específicas / Detalles';
+
+                html += `
+                    <div class="component-card" id="card_${comp.id}">
+                        <div class="component-card-header">${comp.icon || '📷'} ${comp.name}</div>
+                        
+                        <div class="photo-subgroup">
+                            <div class="photo-subgroup-label">${descGen}</div>
+                            <div id="general_${comp.id}"></div>
+                        </div>
+
+                        <div class="photo-subgroup">
+                            <div class="photo-subgroup-label">
+                                <span>${descDet}</span>
+                                <span class="photo-count" id="count_${comp.id}"></span>
+                            </div>
+                            <div class="photos-container" id="specifics_${comp.id}"></div>
+                            <button type="button" class="btn-add-specific" onclick="capturarFoto('${comp.id}', 'specific')">
+                                📷 Tomar Foto de Detalle
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+
+            // Renderizar el contenido previo o inicial de cada componente
+            comps.forEach(comp => {
+                renderGeneralPhoto(comp.id);
+                renderSpecificPhotos(comp.id);
+            });
         }
 
         // ===== CAPTURAR FOTOS =====
@@ -2888,7 +3424,7 @@
             if (data) {
                 container.innerHTML = `
                     <div class="general-photo-preview">
-                        <img src="${data.dataUrl}" alt="Foto General">
+                        <img src="${data.dataUrl}" alt="Foto General" onclick="openLightbox('${data.dataUrl}', 'Foto General - ${comp}')" style="cursor:zoom-in;">
                         <button type="button" class="btn-remove-thumb" onclick="quitarFotoGeneral('${comp}')" title="Eliminar foto general">✕</button>
                     </div>
                     <div class="general-ready-badge">✅ Foto General lista</div>
@@ -2924,7 +3460,7 @@
             list.forEach((photo, idx) => {
                 html += `
                     <div class="photo-thumb">
-                        <img src="${photo.dataUrl}" alt="Detalle ${idx + 1}">
+                        <img src="${photo.dataUrl}" alt="Detalle ${idx + 1}" onclick="openLightbox('${photo.dataUrl}', 'Detalle ${idx + 1} - ${comp}')" style="cursor:zoom-in;">
                         <button type="button" class="btn-remove-thumb" onclick="quitarFotoDetalle('${comp}', ${idx})" title="Eliminar foto">✕</button>
                     </div>`;
             });
@@ -2949,7 +3485,7 @@
 
         // ===== ENVIAR FOTOS EXTERNAS A DRIVE =====
         async function enviarFotosExternas() {
-            if (!selectedPcName) { alert("No hay PC seleccionada"); return; }
+            if (!selectedPcName) { alert("No hay PC o Laptop seleccionada"); return; }
 
             const statusEl = document.getElementById('statusFotos');
             showStatus(statusEl, 'info', '⏳ Procesando fotos...');
@@ -2958,12 +3494,13 @@
             btn.disabled = true;
 
             let filesArray = [];
+            const activeComponents = getActiveComponentsList();
 
-            COMPONENTS.forEach(comp => {
+            activeComponents.forEach(comp => {
                 const item = componentPhotos[comp.id];
                 if (!item) return;
 
-                const subfolderName = comp.name; // Ej: "Teclado", "Mouse", etc.
+                const subfolderName = comp.name; // Ej: "Laptop", "Cargador", "Teclado", etc.
 
                 // 1. Foto General
                 if (item.general) {
@@ -2995,14 +3532,23 @@
                 return;
             }
 
-            showStatus(statusEl, 'info', `📤 Subiendo ${filesArray.length} foto${filesArray.length > 1 ? 's' : ''} a Google Drive (${selectedPcName})...`);
+            const tipoLabel = CURRENT_PHOTO_MODE === 'laptop' ? 'Laptop' : 'Compu';
+            showStatus(statusEl, 'info', `📤 Subiendo ${filesArray.length} foto${filesArray.length > 1 ? 's' : ''} a Google Drive (${selectedPcName} - ${tipoLabel})...`);
 
             try {
                 const response = await fetch(SCRIPT_URL, {
                     method: 'POST',
                     body: JSON.stringify({ pcName: selectedPcName, files: filesArray })
                 });
-                showStatus(statusEl, 'success', `✅ ¡${filesArray.length} foto${filesArray.length > 1 ? 's' : ''} subida${filesArray.length > 1 ? 's' : ''} con éxito a ${selectedPcName}!`);
+                showStatus(statusEl, 'success', `✅ ¡${filesArray.length} foto${filesArray.length > 1 ? 's' : ''} subida${filesArray.length > 1 ? 's' : ''} con éxito a ${selectedPcName}! Carpeta creada y registrada en Google Sheets (resaltada en verde).`);
+                
+                // Actualizar estado en memoria
+                DRIVE_REGISTERED_MAP[selectedPcName.toUpperCase()] = true;
+                const itemInList = HISTORIAL_FULL_LIST.find(i => i.name.toUpperCase() === selectedPcName.toUpperCase());
+                if (itemInList) {
+                    itemInList.isRegistered = true;
+                    itemInList.date = new Date().toISOString();
+                }
             } catch (error) {
                 showStatus(statusEl, 'error', '❌ Error de conexión al subir fotos.');
                 console.error(error);
