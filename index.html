@@ -160,76 +160,320 @@
             border-color: #0f3460;
         }
 
-        /* ===== PASTE BOX (capturas en PC) ===== */
-        .paste-box {
-            border: 2px dashed #c5cae9;
-            border-radius: 10px;
-            min-height: 70px;
-            padding: 12px;
-            text-align: center;
-            color: #999;
-            cursor: pointer;
+        /* ===== CAPTURE GROUPS (Múltiples capturas de pantalla) ===== */
+        .capture-group {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin-bottom: 14px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+            transition: all 0.2s ease;
+        }
+
+        .capture-group:focus-within {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+        }
+
+        .capture-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            gap: 8px;
+        }
+
+        .capture-header label {
+            margin-bottom: 0;
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .capture-header .field-icon {
+            font-size: 1.15rem;
+        }
+
+        .photo-count-badge {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 3px 9px;
+            border-radius: 20px;
+            background: #f1f5f9;
+            color: #64748b;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .photo-count-badge.has-photos {
+            background: #dcfce7;
+            color: #15803d;
+            border: 1px solid #bbf7d0;
+        }
+
+        /* Grid de miniaturas */
+        .captures-thumbs-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .capture-thumb-item {
             position: relative;
-            background: #fafbff;
-            transition: all 0.25s ease;
+            width: 86px;
+            height: 86px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid #cbd5e1;
+            background: #f8fafc;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+            cursor: pointer;
+            transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+        }
+
+        .capture-thumb-item:hover {
+            transform: translateY(-2px);
+            border-color: #3b82f6;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+        }
+
+        .capture-thumb-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .capture-thumb-item .thumb-idx {
+            position: absolute;
+            bottom: 3px;
+            left: 3px;
+            background: rgba(15, 23, 42, 0.8);
+            color: #fff;
+            font-size: 0.68rem;
+            font-weight: 700;
+            padding: 1px 5px;
+            border-radius: 4px;
+            backdrop-filter: blur(2px);
+        }
+
+        .capture-thumb-item .btn-del-thumb {
+            position: absolute;
+            top: 3px;
+            right: 3px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: rgba(239, 68, 68, 0.92);
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 11px;
+            font-weight: bold;
+            line-height: 1;
+            transition: transform 0.15s, background-color 0.15s;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            z-index: 3;
+        }
+
+        .capture-thumb-item .btn-del-thumb:hover {
+            transform: scale(1.15);
+            background: #dc2626;
+        }
+
+        /* Zona de pegado interactiva */
+        .paste-box {
+            border: 2px dashed #93c5fd;
+            border-radius: 10px;
+            min-height: 58px;
+            padding: 10px 14px;
+            text-align: center;
+            color: #475569;
+            cursor: pointer;
+            position: relative;
+            background: #f8fafc;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            outline: none;
         }
 
         .paste-box:focus {
-            outline: none;
-            border-color: #0f3460;
-            background: #e8edf6;
-            box-shadow: 0 0 0 3px rgba(15, 52, 96, 0.1);
+            border-color: #2563eb;
+            background: #eff6ff;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
         }
 
         .paste-box.has-image {
-            border-color: #4caf50;
-            border-style: solid;
-            background: #f1f8f1;
+            border-color: #10b981;
+            border-style: dashed;
+            background: #f0fdf4;
         }
 
-        .paste-box img {
-            max-width: 100%;
-            max-height: 180px;
-            display: block;
-            margin: 0 auto;
-            border-radius: 6px;
+        .paste-box.drag-over {
+            border-color: #16a34a;
+            background: #dcfce7;
+            transform: scale(1.01);
         }
 
-        .paste-box .placeholder {
+        .paste-box-content {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-align: left;
             pointer-events: none;
-            font-size: 0.85rem;
-            line-height: 1.4;
+            flex: 1;
         }
 
-        .paste-box .placeholder .icon {
-            font-size: 1.5rem;
+        .paste-box-content .icon {
+            font-size: 1.35rem;
+            color: #3b82f6;
+            flex-shrink: 0;
+        }
+
+        .paste-box-content .text-main {
+            font-size: 0.84rem;
+            font-weight: 600;
+            color: #1e293b;
             display: block;
-            margin-bottom: 4px;
         }
 
-        .paste-box .btn-remove {
-            position: absolute;
-            top: 6px;
-            right: 6px;
-            background: #e53935;
-            color: #fff;
-            border: none;
-            border-radius: 50%;
-            width: 26px;
-            height: 26px;
-            font-size: 14px;
+        .paste-box-content .text-hint {
+            font-size: 0.72rem;
+            color: #64748b;
+            display: block;
+            margin-top: 1px;
+        }
+
+        .btn-file-browse {
+            background: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            color: #334155;
+            padding: 7px 12px;
+            border-radius: 7px;
+            font-size: 0.78rem;
+            font-weight: 600;
             cursor: pointer;
-            line-height: 26px;
-            padding: 0;
-            box-shadow: 0 2px 6px rgba(229, 57, 53, 0.4);
+            white-space: nowrap;
+            transition: all 0.15s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+            flex-shrink: 0;
+        }
+
+        .btn-file-browse:hover {
+            border-color: #2563eb;
+            color: #2563eb;
+            background: #f1f5f9;
+        }
+
+        .btn-clear-captures {
+            background: #fee2e2;
+            color: #b91c1c;
+            border: 1.5px solid #fca5a5;
+            padding: 14px;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 0.92rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-clear-captures:hover {
+            background: #fecaca;
+            border-color: #ef4444;
+            color: #991b1b;
+        }
+
+        /* Lightbox modal */
+        .image-lightbox-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.88);
+            backdrop-filter: blur(4px);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .image-lightbox-modal.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            position: relative;
+            max-width: 92vw;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #0f172a;
+            border-radius: 12px;
+            padding: 12px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+        }
+
+        .lightbox-content img {
+            max-width: 90vw;
+            max-height: 80vh;
+            object-fit: contain;
+            border-radius: 8px;
+            display: block;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: -14px;
+            right: -14px;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: #ef4444;
+            color: white;
+            border: 2px solid white;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
             transition: transform 0.15s;
         }
 
-        .paste-box .btn-remove:hover {
-            transform: scale(1.1);
+        .lightbox-close:hover {
+            transform: scale(1.15);
+            background: #dc2626;
+        }
+
+        .lightbox-caption {
+            color: #e2e8f0;
+            font-size: 0.85rem;
+            margin-top: 8px;
+            font-weight: 500;
         }
 
         /* ===== SUBMIT BUTTON ===== */
@@ -1063,66 +1307,348 @@
         </div>
 
         <div class="section-title">📸 1. Capturas de Pantalla</div>
+        <p style="font-size:0.83rem; color:#64748b; margin-top:-6px; margin-bottom:14px; line-height:1.45;">
+            💡 Haz clic en cualquier recuadro y presiona <strong>Ctrl+V</strong> para pegar capturas, o usa <strong>📁 Seleccionar</strong>. Se admiten <strong>múltiples fotos</strong> por cada campo.
+        </p>
 
-        <div class="form-group">
-            <label>Peso Disco C:</label>
-            <div class="paste-box" id="f_discoC" tabindex="0" contenteditable="true">
-                <span class="placeholder"><span class="icon">📋</span>Clic aquí + Ctrl+V</span>
+        <!-- 1. Peso Disco C -->
+        <div class="form-group capture-group" data-field="f_discoC">
+            <div class="capture-header">
+                <label><span class="field-icon">💾</span> Peso Disco C:</label>
+                <span class="photo-count-badge" id="badge_f_discoC">0 fotos</span>
+            </div>
+            <div class="captures-thumbs-grid" id="thumbs_f_discoC" style="display:none;"></div>
+            <div class="paste-box" id="f_discoC" tabindex="0">
+                <div class="paste-box-content">
+                    <span class="icon">📋</span>
+                    <div>
+                        <span class="text-main">Clic aquí + <strong>Ctrl+V</strong> para pegar captura</span>
+                        <span class="text-hint">o arrastra imágenes / clic en Seleccionar</span>
+                    </div>
+                </div>
+                <button type="button" class="btn-file-browse" onclick="triggerFileInput('f_discoC', event)">
+                    📁 Seleccionar
+                </button>
+                <input type="file" id="input_f_discoC" multiple accept="image/*" style="display:none;" onchange="handleFileSelect('f_discoC', this)">
             </div>
         </div>
 
-        <div class="form-group">
-            <label>Peso Disco D:</label>
-            <div class="paste-box" id="f_discoD" tabindex="0" contenteditable="true">
-                <span class="placeholder"><span class="icon">📋</span>Clic aquí + Ctrl+V</span>
+        <!-- 2. Peso Disco D -->
+        <div class="form-group capture-group" data-field="f_discoD">
+            <div class="capture-header">
+                <label><span class="field-icon">💾</span> Peso Disco D:</label>
+                <span class="photo-count-badge" id="badge_f_discoD">0 fotos</span>
+            </div>
+            <div class="captures-thumbs-grid" id="thumbs_f_discoD" style="display:none;"></div>
+            <div class="paste-box" id="f_discoD" tabindex="0">
+                <div class="paste-box-content">
+                    <span class="icon">📋</span>
+                    <div>
+                        <span class="text-main">Clic aquí + <strong>Ctrl+V</strong> para pegar captura</span>
+                        <span class="text-hint">o arrastra imágenes / clic en Seleccionar</span>
+                    </div>
+                </div>
+                <button type="button" class="btn-file-browse" onclick="triggerFileInput('f_discoD', event)">
+                    📁 Seleccionar
+                </button>
+                <input type="file" id="input_f_discoD" multiple accept="image/*" style="display:none;" onchange="handleFileSelect('f_discoD', this)">
             </div>
         </div>
 
-        <div class="form-group">
-            <label>Ruta \\elsxnas\home:</label>
-            <div class="paste-box" id="f_red" tabindex="0" contenteditable="true">
-                <span class="placeholder"><span class="icon">📋</span>Clic aquí + Ctrl+V</span>
+        <!-- 3. Foto Escritorio -->
+        <div class="form-group capture-group" data-field="f_escritorio">
+            <div class="capture-header">
+                <label><span class="field-icon">🖥️</span> Foto Escritorio:</label>
+                <span class="photo-count-badge" id="badge_f_escritorio">0 fotos</span>
+            </div>
+            <div class="captures-thumbs-grid" id="thumbs_f_escritorio" style="display:none;"></div>
+            <div class="paste-box" id="f_escritorio" tabindex="0">
+                <div class="paste-box-content">
+                    <span class="icon">📋</span>
+                    <div>
+                        <span class="text-main">Clic aquí + <strong>Ctrl+V</strong> para pegar captura</span>
+                        <span class="text-hint">o arrastra imágenes / clic en Seleccionar</span>
+                    </div>
+                </div>
+                <button type="button" class="btn-file-browse" onclick="triggerFileInput('f_escritorio', event)">
+                    📁 Seleccionar
+                </button>
+                <input type="file" id="input_f_escritorio" multiple accept="image/*" style="display:none;" onchange="handleFileSelect('f_escritorio', this)">
             </div>
         </div>
 
-        <div class="form-group">
-            <label>Usuarios:</label>
-            <div class="paste-box" id="f_usuarios" tabindex="0" contenteditable="true">
-                <span class="placeholder"><span class="icon">📋</span>Clic aquí + Ctrl+V</span>
+        <!-- 4. Propiedades de Equipo -->
+        <div class="form-group capture-group" data-field="f_propiedades_equipo">
+            <div class="capture-header">
+                <label><span class="field-icon">⚙️</span> Propiedades de Equipo:</label>
+                <span class="photo-count-badge" id="badge_f_propiedades_equipo">0 fotos</span>
+            </div>
+            <div class="captures-thumbs-grid" id="thumbs_f_propiedades_equipo" style="display:none;"></div>
+            <div class="paste-box" id="f_propiedades_equipo" tabindex="0">
+                <div class="paste-box-content">
+                    <span class="icon">📋</span>
+                    <div>
+                        <span class="text-main">Clic aquí + <strong>Ctrl+V</strong> para pegar captura</span>
+                        <span class="text-hint">o arrastra imágenes / clic en Seleccionar</span>
+                    </div>
+                </div>
+                <button type="button" class="btn-file-browse" onclick="triggerFileInput('f_propiedades_equipo', event)">
+                    📁 Seleccionar
+                </button>
+                <input type="file" id="input_f_propiedades_equipo" multiple accept="image/*" style="display:none;" onchange="handleFileSelect('f_propiedades_equipo', this)">
             </div>
         </div>
 
-        <div class="form-group">
-            <label>Impresoras:</label>
-            <div class="paste-box" id="f_impresoras" tabindex="0" contenteditable="true">
-                <span class="placeholder"><span class="icon">📋</span>Clic aquí + Ctrl+V</span>
+        <!-- 5. Unidades Locales y de Red (escritorio) -->
+        <div class="form-group capture-group" data-field="f_unidades_locales_red">
+            <div class="capture-header">
+                <label><span class="field-icon">💽</span> Unidades Locales y de Red (escritorio):</label>
+                <span class="photo-count-badge" id="badge_f_unidades_locales_red">0 fotos</span>
+            </div>
+            <div class="captures-thumbs-grid" id="thumbs_f_unidades_locales_red" style="display:none;"></div>
+            <div class="paste-box" id="f_unidades_locales_red" tabindex="0">
+                <div class="paste-box-content">
+                    <span class="icon">📋</span>
+                    <div>
+                        <span class="text-main">Clic aquí + <strong>Ctrl+V</strong> para pegar captura</span>
+                        <span class="text-hint">o arrastra imágenes / clic en Seleccionar</span>
+                    </div>
+                </div>
+                <button type="button" class="btn-file-browse" onclick="triggerFileInput('f_unidades_locales_red', event)">
+                    📁 Seleccionar
+                </button>
+                <input type="file" id="input_f_unidades_locales_red" multiple accept="image/*" style="display:none;" onchange="handleFileSelect('f_unidades_locales_red', this)">
             </div>
         </div>
 
-        <div class="form-group">
-            <label>Programas:</label>
-            <div class="paste-box" id="f_programas" tabindex="0" contenteditable="true">
-                <span class="placeholder"><span class="icon">📋</span>Clic aquí + Ctrl+V</span>
+        <!-- 6. Mapeo de Unidades de Red (buscar red en escritorio) -->
+        <div class="form-group capture-group" data-field="f_mapeo_red">
+            <div class="capture-header">
+                <label><span class="field-icon">🌐</span> Mapeo de Unidades de Red (buscar red en escritorio):</label>
+                <span class="photo-count-badge" id="badge_f_mapeo_red">0 fotos</span>
+            </div>
+            <div class="captures-thumbs-grid" id="thumbs_f_mapeo_red" style="display:none;"></div>
+            <div class="paste-box" id="f_mapeo_red" tabindex="0">
+                <div class="paste-box-content">
+                    <span class="icon">📋</span>
+                    <div>
+                        <span class="text-main">Clic aquí + <strong>Ctrl+V</strong> para pegar captura</span>
+                        <span class="text-hint">o arrastra imágenes / clic en Seleccionar</span>
+                    </div>
+                </div>
+                <button type="button" class="btn-file-browse" onclick="triggerFileInput('f_mapeo_red', event)">
+                    📁 Seleccionar
+                </button>
+                <input type="file" id="input_f_mapeo_red" multiple accept="image/*" style="display:none;" onchange="handleFileSelect('f_mapeo_red', this)">
             </div>
         </div>
 
-        <div class="form-group">
-            <label>Carpetas Compartidas:</label>
-            <div class="paste-box" id="f_carpetas" tabindex="0" contenteditable="true">
-                <span class="placeholder"><span class="icon">📋</span>Clic aquí + Ctrl+V</span>
+        <!-- 7. Ruta \\elsxnas\home -->
+        <div class="form-group capture-group" data-field="f_red">
+            <div class="capture-header">
+                <label><span class="field-icon">📁</span> Ruta \\elsxnas\home:</label>
+                <span class="photo-count-badge" id="badge_f_red">0 fotos</span>
+            </div>
+            <div class="captures-thumbs-grid" id="thumbs_f_red" style="display:none;"></div>
+            <div class="paste-box" id="f_red" tabindex="0">
+                <div class="paste-box-content">
+                    <span class="icon">📋</span>
+                    <div>
+                        <span class="text-main">Clic aquí + <strong>Ctrl+V</strong> para pegar captura</span>
+                        <span class="text-hint">o arrastra imágenes / clic en Seleccionar</span>
+                    </div>
+                </div>
+                <button type="button" class="btn-file-browse" onclick="triggerFileInput('f_red', event)">
+                    📁 Seleccionar
+                </button>
+                <input type="file" id="input_f_red" multiple accept="image/*" style="display:none;" onchange="handleFileSelect('f_red', this)">
             </div>
         </div>
 
-        <div class="form-group">
-            <label>IP:</label>
-            <div class="paste-box" id="f_ip" tabindex="0" contenteditable="true">
-                <span class="placeholder"><span class="icon">📋</span>Clic aquí + Ctrl+V</span>
+        <!-- 8. Carpetas Compartidas -->
+        <div class="form-group capture-group" data-field="f_carpetas">
+            <div class="capture-header">
+                <label><span class="field-icon">📂</span> Carpetas Compartidas:</label>
+                <span class="photo-count-badge" id="badge_f_carpetas">0 fotos</span>
+            </div>
+            <div class="captures-thumbs-grid" id="thumbs_f_carpetas" style="display:none;"></div>
+            <div class="paste-box" id="f_carpetas" tabindex="0">
+                <div class="paste-box-content">
+                    <span class="icon">📋</span>
+                    <div>
+                        <span class="text-main">Clic aquí + <strong>Ctrl+V</strong> para pegar captura</span>
+                        <span class="text-hint">o arrastra imágenes / clic en Seleccionar</span>
+                    </div>
+                </div>
+                <button type="button" class="btn-file-browse" onclick="triggerFileInput('f_carpetas', event)">
+                    📁 Seleccionar
+                </button>
+                <input type="file" id="input_f_carpetas" multiple accept="image/*" style="display:none;" onchange="handleFileSelect('f_carpetas', this)">
             </div>
         </div>
 
-        <button class="btn-submit primary" onclick="enviarCapturas()" id="btnSubmitNuevo">
-            🚀 Subir Capturas a Drive
-        </button>
+        <!-- 9. IP -->
+        <div class="form-group capture-group" data-field="f_ip">
+            <div class="capture-header">
+                <label><span class="field-icon">🔌</span> IP:</label>
+                <span class="photo-count-badge" id="badge_f_ip">0 fotos</span>
+            </div>
+            <div class="captures-thumbs-grid" id="thumbs_f_ip" style="display:none;"></div>
+            <div class="paste-box" id="f_ip" tabindex="0">
+                <div class="paste-box-content">
+                    <span class="icon">📋</span>
+                    <div>
+                        <span class="text-main">Clic aquí + <strong>Ctrl+V</strong> para pegar captura</span>
+                        <span class="text-hint">o arrastra imágenes / clic en Seleccionar</span>
+                    </div>
+                </div>
+                <button type="button" class="btn-file-browse" onclick="triggerFileInput('f_ip', event)">
+                    📁 Seleccionar
+                </button>
+                <input type="file" id="input_f_ip" multiple accept="image/*" style="display:none;" onchange="handleFileSelect('f_ip', this)">
+            </div>
+        </div>
+
+        <!-- 10. Usuarios -->
+        <div class="form-group capture-group" data-field="f_usuarios">
+            <div class="capture-header">
+                <label><span class="field-icon">👥</span> Usuarios:</label>
+                <span class="photo-count-badge" id="badge_f_usuarios">0 fotos</span>
+            </div>
+            <div class="captures-thumbs-grid" id="thumbs_f_usuarios" style="display:none;"></div>
+            <div class="paste-box" id="f_usuarios" tabindex="0">
+                <div class="paste-box-content">
+                    <span class="icon">📋</span>
+                    <div>
+                        <span class="text-main">Clic aquí + <strong>Ctrl+V</strong> para pegar captura</span>
+                        <span class="text-hint">o arrastra imágenes / clic en Seleccionar</span>
+                    </div>
+                </div>
+                <button type="button" class="btn-file-browse" onclick="triggerFileInput('f_usuarios', event)">
+                    📁 Seleccionar
+                </button>
+                <input type="file" id="input_f_usuarios" multiple accept="image/*" style="display:none;" onchange="handleFileSelect('f_usuarios', this)">
+            </div>
+        </div>
+
+        <!-- 11. Impresoras -->
+        <div class="form-group capture-group" data-field="f_impresoras">
+            <div class="capture-header">
+                <label><span class="field-icon">🖨️</span> Impresoras:</label>
+                <span class="photo-count-badge" id="badge_f_impresoras">0 fotos</span>
+            </div>
+            <div class="captures-thumbs-grid" id="thumbs_f_impresoras" style="display:none;"></div>
+            <div class="paste-box" id="f_impresoras" tabindex="0">
+                <div class="paste-box-content">
+                    <span class="icon">📋</span>
+                    <div>
+                        <span class="text-main">Clic aquí + <strong>Ctrl+V</strong> para pegar captura</span>
+                        <span class="text-hint">o arrastra imágenes / clic en Seleccionar</span>
+                    </div>
+                </div>
+                <button type="button" class="btn-file-browse" onclick="triggerFileInput('f_impresoras', event)">
+                    📁 Seleccionar
+                </button>
+                <input type="file" id="input_f_impresoras" multiple accept="image/*" style="display:none;" onchange="handleFileSelect('f_impresoras', this)">
+            </div>
+        </div>
+
+        <!-- 12. Programas -->
+        <div class="form-group capture-group" data-field="f_programas">
+            <div class="capture-header">
+                <label><span class="field-icon">💻</span> Programas:</label>
+                <span class="photo-count-badge" id="badge_f_programas">0 fotos</span>
+            </div>
+            <div class="captures-thumbs-grid" id="thumbs_f_programas" style="display:none;"></div>
+            <div class="paste-box" id="f_programas" tabindex="0">
+                <div class="paste-box-content">
+                    <span class="icon">📋</span>
+                    <div>
+                        <span class="text-main">Clic aquí + <strong>Ctrl+V</strong> para pegar captura</span>
+                        <span class="text-hint">o arrastra imágenes / clic en Seleccionar</span>
+                    </div>
+                </div>
+                <button type="button" class="btn-file-browse" onclick="triggerFileInput('f_programas', event)">
+                    📁 Seleccionar
+                </button>
+                <input type="file" id="input_f_programas" multiple accept="image/*" style="display:none;" onchange="handleFileSelect('f_programas', this)">
+            </div>
+        </div>
+
+        <!-- 13. Marcadores de Edge y Chrome -->
+        <div class="form-group capture-group" data-field="f_marcadores">
+            <div class="capture-header">
+                <label><span class="field-icon">⭐</span> Marcadores de Edge y Chrome:</label>
+                <span class="photo-count-badge" id="badge_f_marcadores">0 fotos</span>
+            </div>
+            <div class="captures-thumbs-grid" id="thumbs_f_marcadores" style="display:none;"></div>
+            <div class="paste-box" id="f_marcadores" tabindex="0">
+                <div class="paste-box-content">
+                    <span class="icon">📋</span>
+                    <div>
+                        <span class="text-main">Clic aquí + <strong>Ctrl+V</strong> para pegar captura</span>
+                        <span class="text-hint">o arrastra imágenes / clic en Seleccionar</span>
+                    </div>
+                </div>
+                <button type="button" class="btn-file-browse" onclick="triggerFileInput('f_marcadores', event)">
+                    📁 Seleccionar
+                </button>
+                <input type="file" id="input_f_marcadores" multiple accept="image/*" style="display:none;" onchange="handleFileSelect('f_marcadores', this)">
+            </div>
+        </div>
+
+        <!-- 14. Configuración de Correo (entrar a Outlook) -->
+        <div class="form-group capture-group" data-field="f_config_outlook">
+            <div class="capture-header">
+                <label><span class="field-icon">✉️</span> Configuración de Correo (entrar a Outlook):</label>
+                <span class="photo-count-badge" id="badge_f_config_outlook">0 fotos</span>
+            </div>
+            <div class="captures-thumbs-grid" id="thumbs_f_config_outlook" style="display:none;"></div>
+            <div class="paste-box" id="f_config_outlook" tabindex="0">
+                <div class="paste-box-content">
+                    <span class="icon">📋</span>
+                    <div>
+                        <span class="text-main">Clic aquí + <strong>Ctrl+V</strong> para pegar captura</span>
+                        <span class="text-hint">o arrastra imágenes / clic en Seleccionar</span>
+                    </div>
+                </div>
+                <button type="button" class="btn-file-browse" onclick="triggerFileInput('f_config_outlook', event)">
+                    📁 Seleccionar
+                </button>
+                <input type="file" id="input_f_config_outlook" multiple accept="image/*" style="display:none;" onchange="handleFileSelect('f_config_outlook', this)">
+            </div>
+        </div>
+
+        <!-- 15. Archivos de Correo PST -->
+        <div class="form-group capture-group" data-field="f_archivos_pst">
+            <div class="capture-header">
+                <label><span class="field-icon">🗃️</span> Archivos de Correo PST:</label>
+                <span class="photo-count-badge" id="badge_f_archivos_pst">0 fotos</span>
+            </div>
+            <div class="captures-thumbs-grid" id="thumbs_f_archivos_pst" style="display:none;"></div>
+            <div class="paste-box" id="f_archivos_pst" tabindex="0">
+                <div class="paste-box-content">
+                    <span class="icon">📋</span>
+                    <div>
+                        <span class="text-main">Clic aquí + <strong>Ctrl+V</strong> para pegar captura</span>
+                        <span class="text-hint">o arrastra imágenes / clic en Seleccionar</span>
+                    </div>
+                </div>
+                <button type="button" class="btn-file-browse" onclick="triggerFileInput('f_archivos_pst', event)">
+                    📁 Seleccionar
+                </button>
+                <input type="file" id="input_f_archivos_pst" multiple accept="image/*" style="display:none;" onchange="handleFileSelect('f_archivos_pst', this)">
+            </div>
+        </div>
+
+        <div style="display:flex; gap:10px; margin-top:20px;">
+            <button class="btn-submit primary" onclick="enviarCapturas()" id="btnSubmitNuevo" style="flex:2;">
+                🚀 Subir Capturas a Drive
+            </button>
+            <button type="button" class="btn-clear-captures" onclick="limpiarTodasLasCapturas()" style="flex:1;" title="Limpiar todas las capturas">
+                🗑️ Limpiar todo
+            </button>
+        </div>
         <div id="statusNuevo" class="status"></div>
     </div>
 
@@ -1293,7 +1819,26 @@
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzXqDhg2XL0iJPL-UHOVtZuAw4pcDf3Ieklnvx6e8er6AbMUUCCiF3so4-4raEJgeeH/exec";
 
         // ===== VARIABLES GLOBALES =====
-        const pastedImages = {};
+        const pastedImages = {}; // Retrocompatibilidad
+        const capturedImages = {}; // id -> [ { dataUrl, base64, mimeType, name }, ... ]
+        const CAPTURA_FIELDS = [
+            'f_discoC',
+            'f_discoD',
+            'f_escritorio',
+            'f_propiedades_equipo',
+            'f_unidades_locales_red',
+            'f_mapeo_red',
+            'f_red',
+            'f_carpetas',
+            'f_ip',
+            'f_usuarios',
+            'f_impresoras',
+            'f_programas',
+            'f_marcadores',
+            'f_config_outlook',
+            'f_archivos_pst'
+        ];
+        CAPTURA_FIELDS.forEach(id => { capturedImages[id] = []; });
 
         // ===== BASE DE DATOS DE EQUIPOS ELECTROSUR =====
         const GOOGLE_SHEET_JSONP_URL = "https://docs.google.com/spreadsheets/d/1dMhclruNOVk8sX3KpFhT-2FOryX_Aj-x50oxWXcLzvU/gviz/tq?tqx=responseHandler:googleSheetsCallback&gid=0";
@@ -1680,9 +2225,10 @@
             }
         });
 
-        // Sincronizar automáticamente con Google Sheets al cargar la página
+        // Sincronizar automáticamente con Google Sheets e inicializar capturas al cargar la página
         window.addEventListener('DOMContentLoaded', function() {
             sincronizarConGoogleSheets(false);
+            initCaptureBoxes();
         });
 
         // Filtrado en vivo del Historial
@@ -1730,54 +2276,267 @@
             }
         }
 
-        // ===== PASTE BOXES (para capturas en PC) =====
-        document.querySelectorAll('.paste-box').forEach(box => {
-            box.addEventListener('paste', function (e) {
-                e.preventDefault();
-                const items = e.clipboardData.items;
-                for (let item of items) {
-                    if (item.type.startsWith('image/')) {
-                        const file = item.getAsFile();
-                        const reader = new FileReader();
-                        reader.onload = (ev) => {
-                            const dataUrl = ev.target.result;
-                            const base64 = dataUrl.split(',')[1];
-                            const mimeType = item.type;
+        // ===== GESTOR DE CAPTURAS MÚLTIPLES (Tab 1: Capturas de Pantalla) =====
+        function initCaptureBoxes() {
+            document.querySelectorAll('.paste-box').forEach(box => {
+                const fieldId = box.id;
+                if (!fieldId || !fieldId.startsWith('f_')) return;
 
-                            pastedImages[box.id] = { base64, mimeType };
+                // Evento Pegar (Ctrl+V / Cmd+V)
+                box.addEventListener('paste', function (e) {
+                    handlePaste(e, fieldId);
+                });
 
-                            box.innerHTML = '';
-                            const img = document.createElement('img');
-                            img.src = dataUrl;
-                            box.appendChild(img);
+                // Permitir teclado Ctrl+V sin conflicto
+                box.addEventListener('keydown', function (e) {
+                    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'v') {
+                        // Deja que el evento 'paste' nativo se dispare
+                        return;
+                    }
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        triggerFileInput(fieldId);
+                    }
+                });
 
-                            const btn = document.createElement('button');
-                            btn.className = 'btn-remove';
-                            btn.innerHTML = '✕';
-                            btn.onclick = function (ev) {
-                                ev.stopPropagation();
-                                delete pastedImages[box.id];
-                                box.innerHTML = '<span class="placeholder"><span class="icon">📋</span>Clic aquí + Ctrl+V</span>';
-                                box.classList.remove('has-image');
-                            };
-                            box.appendChild(btn);
-                            box.classList.add('has-image');
-                        };
-                        reader.readAsDataURL(file);
-                        break;
+                // Drag & Drop
+                box.addEventListener('dragover', function (e) {
+                    e.preventDefault();
+                    box.classList.add('drag-over');
+                });
+
+                box.addEventListener('dragleave', function () {
+                    box.classList.remove('drag-over');
+                });
+
+                box.addEventListener('drop', function (e) {
+                    e.preventDefault();
+                    box.classList.remove('drag-over');
+                    if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+                        for (let i = 0; i < e.dataTransfer.files.length; i++) {
+                            const file = e.dataTransfer.files[i];
+                            if (file.type.startsWith('image/')) {
+                                addFileToField(fieldId, file);
+                            }
+                        }
+                    }
+                });
+
+                // Clic en la caja enfoca para pegar
+                box.addEventListener('click', function (e) {
+                    if (!e.target.closest('.btn-file-browse')) {
+                        box.focus();
+                    }
+                });
+
+                // Render inicial
+                renderFieldCaptures(fieldId);
+            });
+        }
+
+        function triggerFileInput(fieldId, event) {
+            if (event) event.stopPropagation();
+            const input = document.getElementById('input_' + fieldId);
+            if (input) {
+                input.value = '';
+                input.click();
+            }
+        }
+
+        function handleFileSelect(fieldId, input) {
+            if (!input || !input.files || input.files.length === 0) return;
+            const files = Array.from(input.files);
+            files.forEach(file => {
+                if (file.type.startsWith('image/')) {
+                    addFileToField(fieldId, file);
+                }
+            });
+        }
+
+        function handlePaste(e, fieldId) {
+            let imagesFound = false;
+
+            // 1. Revisar si hay archivos en clipboardData.files (archivos copiados)
+            if (e.clipboardData && e.clipboardData.files && e.clipboardData.files.length > 0) {
+                for (let i = 0; i < e.clipboardData.files.length; i++) {
+                    const file = e.clipboardData.files[i];
+                    if (file.type.startsWith('image/')) {
+                        imagesFound = true;
+                        addFileToField(fieldId, file);
                     }
                 }
-            });
+            }
 
-            box.addEventListener('keydown', function (e) {
-                if (!(e.ctrlKey && e.key === 'v')) {
-                    e.preventDefault();
+            // 2. Revisar clipboardData.items (Captura directa con Snipping Tool / ImprPant)
+            if (!imagesFound && e.clipboardData && e.clipboardData.items) {
+                for (let i = 0; i < e.clipboardData.items.length; i++) {
+                    const item = e.clipboardData.items[i];
+                    if (item.type.startsWith('image/')) {
+                        const file = item.getAsFile();
+                        if (file) {
+                            imagesFound = true;
+                            addFileToField(fieldId, file);
+                        }
+                    }
                 }
-            });
+            }
 
-            box.addEventListener('drop', function (e) {
+            if (imagesFound) {
                 e.preventDefault();
-            });
+            }
+        }
+
+        function addFileToField(fieldId, file) {
+            const reader = new FileReader();
+            reader.onload = function (ev) {
+                const dataUrl = ev.target.result;
+                const base64 = dataUrl.split(',')[1];
+                const mimeType = file.type || 'image/png';
+
+                if (!capturedImages[fieldId]) {
+                    capturedImages[fieldId] = [];
+                }
+
+                capturedImages[fieldId].push({
+                    dataUrl: dataUrl,
+                    base64: base64,
+                    mimeType: mimeType,
+                    name: file.name || 'captura.png'
+                });
+
+                // Espejo en pastedImages para retrocompatibilidad
+                pastedImages[fieldId] = { base64, mimeType };
+
+                renderFieldCaptures(fieldId);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function renderFieldCaptures(fieldId) {
+            const list = capturedImages[fieldId] || [];
+            const thumbsContainer = document.getElementById('thumbs_' + fieldId);
+            const badge = document.getElementById('badge_' + fieldId);
+            const box = document.getElementById(fieldId);
+
+            // Actualizar badge contador
+            if (badge) {
+                if (list.length === 0) {
+                    badge.textContent = '0 fotos';
+                    badge.className = 'photo-count-badge';
+                } else {
+                    badge.textContent = `✅ ${list.length} foto${list.length > 1 ? 's' : ''}`;
+                    badge.className = 'photo-count-badge has-photos';
+                }
+            }
+
+            // Actualizar cuadrícula de miniaturas
+            if (thumbsContainer) {
+                if (list.length === 0) {
+                    thumbsContainer.innerHTML = '';
+                    thumbsContainer.style.display = 'none';
+                } else {
+                    thumbsContainer.style.display = 'flex';
+                    let html = '';
+                    list.forEach((imgObj, idx) => {
+                        html += `
+                            <div class="capture-thumb-item" onclick="abrirModalZoom('${fieldId}', ${idx})" title="Clic para ampliar captura #${idx + 1}">
+                                <img src="${imgObj.dataUrl}" alt="Captura ${idx + 1}">
+                                <span class="thumb-idx">#${idx + 1}</span>
+                                <button type="button" class="btn-del-thumb" onclick="quitarCaptura('${fieldId}', ${idx}, event)" title="Eliminar captura">✕</button>
+                            </div>`;
+                    });
+                    thumbsContainer.innerHTML = html;
+                }
+            }
+
+            // Actualizar texto del cuadro de pegado
+            if (box) {
+                const contentDiv = box.querySelector('.paste-box-content');
+                if (contentDiv) {
+                    if (list.length === 0) {
+                        contentDiv.innerHTML = `
+                            <span class="icon">📋</span>
+                            <div>
+                                <span class="text-main">Clic aquí + <strong>Ctrl+V</strong> para pegar captura</span>
+                                <span class="text-hint">o arrastra imágenes / clic en Seleccionar</span>
+                            </div>`;
+                        box.classList.remove('has-image');
+                    } else {
+                        contentDiv.innerHTML = `
+                            <span class="icon" style="color:#10b981;">➕</span>
+                            <div>
+                                <span class="text-main">Pegar otra captura (Ctrl+V)</span>
+                                <span class="text-hint">${list.length} añadida${list.length > 1 ? 's' : ''} • Clic aquí para seguir pegando</span>
+                            </div>`;
+                        box.classList.add('has-image');
+                    }
+                }
+            }
+        }
+
+        function quitarCaptura(fieldId, index, event) {
+            if (event) event.stopPropagation();
+            if (capturedImages[fieldId] && capturedImages[fieldId][index]) {
+                capturedImages[fieldId].splice(index, 1);
+                if (capturedImages[fieldId].length === 0) {
+                    delete pastedImages[fieldId];
+                } else {
+                    const last = capturedImages[fieldId][capturedImages[fieldId].length - 1];
+                    pastedImages[fieldId] = { base64: last.base64, mimeType: last.mimeType };
+                }
+                renderFieldCaptures(fieldId);
+            }
+        }
+
+        function limpiarTodasLasCapturas() {
+            let total = 0;
+            for (let id in capturedImages) {
+                total += (capturedImages[id] || []).length;
+            }
+            if (total === 0) {
+                alert("No hay capturas cargadas para limpiar.");
+                return;
+            }
+            if (!confirm(`¿Estás seguro de que deseas eliminar todas las ${total} capturas cargadas en este formulario?`)) {
+                return;
+            }
+            for (let id in capturedImages) {
+                capturedImages[id] = [];
+                delete pastedImages[id];
+                renderFieldCaptures(id);
+            }
+            const statusEl = document.getElementById('statusNuevo');
+            if (statusEl) statusEl.classList.remove('show');
+        }
+
+        function abrirModalZoom(fieldId, index) {
+            const list = capturedImages[fieldId];
+            if (!list || !list[index]) return;
+            const imgObj = list[index];
+            const modal = document.getElementById('imageLightboxModal');
+            const img = document.getElementById('lightboxImg');
+            const cap = document.getElementById('lightboxCaption');
+            if (modal && img) {
+                img.src = imgObj.dataUrl;
+                const fieldCard = document.querySelector(`[data-field="${fieldId}"] label`);
+                const labelText = fieldCard ? fieldCard.textContent.trim() : fieldId;
+                if (cap) cap.textContent = `${labelText} (Captura #${index + 1} de ${list.length})`;
+                modal.classList.add('active');
+            }
+        }
+
+        function closeLightbox(event) {
+            if (event && event.target && event.target.tagName === 'IMG') return;
+            const modal = document.getElementById('imageLightboxModal');
+            if (modal) modal.classList.remove('active');
+        }
+
+        // Cerrar lightbox con tecla Escape
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                const modal = document.getElementById('imageLightboxModal');
+                if (modal) modal.classList.remove('active');
+            }
         });
 
         // ===== ENVIAR CAPTURAS (Tab Nuevo Registro) =====
@@ -1789,8 +2548,19 @@
                 return; 
             }
 
+            // Contar capturas en todos los 15 campos
+            let totalCapturas = 0;
+            for (let id in capturedImages) {
+                totalCapturas += (capturedImages[id] || []).length;
+            }
+
+            if (totalCapturas === 0) {
+                alert("⚠️ Por favor pega o sube al menos una captura de pantalla antes de enviar.");
+                return;
+            }
+
             const statusEl = document.getElementById('statusNuevo');
-            showStatus(statusEl, 'info', '⏳ Procesando capturas...');
+            showStatus(statusEl, 'info', `⏳ Preparando ${totalCapturas} captura(s)...`);
 
             const btn = document.getElementById('btnSubmitNuevo');
             btn.disabled = true;
@@ -1833,22 +2603,24 @@
                 });
             }
 
-            for (let id in pastedImages) {
-                const data = pastedImages[id];
-                const ext = data.mimeType.split('/')[1] || 'png';
-                filesArray.push({
-                    name: id.replace('f_', '') + '.' + ext,
-                    mimeType: data.mimeType,
-                    base64: data.base64
+            // Añadir todas las capturas (con soporte múltiple numerado por campo)
+            for (let id in capturedImages) {
+                const list = capturedImages[id] || [];
+                const fieldName = id.replace('f_', '');
+                list.forEach((imgObj, idx) => {
+                    const ext = (imgObj.mimeType.split('/')[1] || 'png').replace('jpeg', 'jpg');
+                    const fileName = list.length > 1 
+                        ? `${fieldName}_${idx + 1}.${ext}`
+                        : `${fieldName}.${ext}`;
+                    filesArray.push({
+                        name: fileName,
+                        mimeType: imgObj.mimeType,
+                        base64: imgObj.base64
+                    });
                 });
             }
 
-            if (filesArray.length === 0) {
-                alert("Pega al menos una captura.");
-                btn.disabled = false;
-                statusEl.classList.remove('show');
-                return;
-            }
+            showStatus(statusEl, 'info', `📤 Subiendo ${filesArray.length} archivo(s) a Google Drive (${pcName})...`);
 
             const payload = {
                 pcName: pcName,
@@ -1873,9 +2645,9 @@
                     method: 'POST',
                     body: JSON.stringify(payload)
                 });
-                showStatus(statusEl, 'success', '✅ ¡Capturas subidas y datos del equipo sincronizados en Google Sheets!');
+                showStatus(statusEl, 'success', `✅ ¡${totalCapturas} captura(s) subidas con éxito a Google Drive (${pcName}) y datos sincronizados en Google Sheets!`);
             } catch (error) {
-                showStatus(statusEl, 'error', '❌ Error de conexión. Revisa la consola.');
+                showStatus(statusEl, 'error', '❌ Error de conexión al subir capturas. Revisa la consola.');
                 console.error(error);
             }
 
@@ -2254,6 +3026,15 @@
             el.textContent = message;
         }
     </script>
+
+    <!-- Modal Lightbox para ampliar capturas -->
+    <div id="imageLightboxModal" class="image-lightbox-modal" onclick="closeLightbox(event)">
+        <div class="lightbox-content">
+            <button type="button" class="lightbox-close" onclick="closeLightbox(event)" title="Cerrar (Esc)">✕</button>
+            <img id="lightboxImg" src="" alt="Vista previa ampliada">
+            <div class="lightbox-caption" id="lightboxCaption"></div>
+        </div>
+    </div>
 </body>
 
 </html>
