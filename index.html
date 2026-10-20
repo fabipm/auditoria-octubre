@@ -640,6 +640,78 @@
             color: #4f46e5;
         }
 
+        /* Resumen por estado (solo lectura) */
+        #historialStatsBar {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 12px 14px;
+            margin-bottom: 14px;
+            cursor: default;
+        }
+
+        .resumen-titulo {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+
+        .resumen-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .resumen-item {
+            text-align: center;
+            padding: 2px 4px 6px;
+            border-bottom: 3px solid #e2e8f0;
+        }
+
+        .resumen-item + .resumen-item {
+            border-left: 1px solid #f1f5f9;
+        }
+
+        .resumen-item.estado-completo { border-bottom-color: #86efac; }
+        .resumen-item.estado-pendiente { border-bottom-color: #fdba74; }
+        .resumen-item.estado-ausente { border-bottom-color: #fca5a5; }
+        .resumen-item.estado-falta-regularizar { border-bottom-color: #7dd3fc; }
+
+        .resumen-num {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #0f172a;
+            line-height: 1.2;
+        }
+
+        .resumen-label {
+            font-size: 0.68rem;
+            font-weight: 600;
+            color: #64748b;
+        }
+
+        .resumen-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #3730a3;
+        }
+
+        .resumen-total small {
+            font-weight: 500;
+            color: #94a3b8;
+        }
+
+        .resumen-total strong {
+            font-size: 1.3rem;
+            color: #4f46e5;
+        }
+
         /* Pestañas de filtro en Historial */
         .historial-filter-tabs {
             display: flex;
@@ -785,6 +857,30 @@
             color: #15803d;
             border: 1px solid #86efac;
         }
+
+        .pc-card-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 4px 0 2px;
+        }
+
+        .badge-estado {
+            display: inline-flex;
+            align-items: center;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 12px;
+            border: 1px solid #cbd5e1;
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        .badge-estado.estado-completo { background: #dcfce7; border-color: #86efac; color: #15803d; }
+        .badge-estado.estado-pendiente { background: #ffedd5; border-color: #fdba74; color: #c2410c; }
+        .badge-estado.estado-ausente { background: #fee2e2; border-color: #fca5a5; color: #b91c1c; }
+        .badge-estado.estado-falta-regularizar { background: #e0f2fe; border-color: #7dd3fc; color: #0369a1; }
 
         .badge-status-pending {
             display: inline-flex;
@@ -2002,14 +2098,16 @@
             <div id="historialFilterTabs" class="historial-filter-tabs" style="display:none;">
                 <button type="button" class="filter-tab-btn active" data-filter="all"
                     onclick="setHistorialFiltro('all')">Todos</button>
-                <button type="button" class="filter-tab-btn" data-filter="registered"
-                    onclick="setHistorialFiltro('registered')">✅ En Drive</button>
-                <button type="button" class="filter-tab-btn" data-filter="pending"
-                    onclick="setHistorialFiltro('pending')">⏳ Pendientes</button>
-                <button type="button" class="filter-tab-btn" data-filter="laptop"
-                    onclick="setHistorialFiltro('laptop')">💻 Laptops</button>
-                <button type="button" class="filter-tab-btn" data-filter="compu"
-                    onclick="setHistorialFiltro('compu')">🖥️ Desktops / WS</button>
+                <button type="button" class="filter-tab-btn" data-filter="COMPLETO"
+                    onclick="setHistorialFiltro('COMPLETO')">✅ Completo</button>
+                <button type="button" class="filter-tab-btn" data-filter="PENDIENTE"
+                    onclick="setHistorialFiltro('PENDIENTE')">🕒 Pendiente</button>
+                <button type="button" class="filter-tab-btn" data-filter="AUSENTE"
+                    onclick="setHistorialFiltro('AUSENTE')">🏖️ Ausente</button>
+                <button type="button" class="filter-tab-btn" data-filter="FALTA REGULARIZAR"
+                    onclick="setHistorialFiltro('FALTA REGULARIZAR')">📷 Falta regularizar</button>
+                <button type="button" class="filter-tab-btn" data-filter="SIN"
+                    onclick="setHistorialFiltro('SIN')">❔ Sin estado</button>
             </div>
 
             <div id="historialFilterWrapper" style="margin-bottom:14px; display:none;">
@@ -2111,7 +2209,7 @@
 
         // ===== MAPAS Y ESTADOS DE REGISTRO EN DRIVE & DISPOSITIVOS =====
         let DRIVE_REGISTERED_MAP = {}; // Mapa: CODIGO -> Date o true
-        let HISTORIAL_FILTER = 'all';  // 'all' | 'registered' | 'pending' | 'laptop' | 'compu'
+        let HISTORIAL_FILTER = 'all';  // 'all' | un estado de ESTADOS_REVISION | 'SIN' (sin estado)
         let CURRENT_PHOTO_MODE = 'compu'; // 'laptop' | 'compu'
         let HISTORIAL_FULL_LIST = [];  // Lista unificada para filtrar y buscar
 
@@ -3243,18 +3341,22 @@
             const porEstado = {};
             ESTADOS_REVISION.forEach(e => { porEstado[e.value] = list.filter(item => item.estadoRevision === e.value).length; });
 
+            // Panel de solo lectura (no son botones): número grande y etiqueta debajo
             statsBar.innerHTML = `
-                ${ESTADOS_REVISION.map(e => `
-                <div class="stat-pill ${e.value === 'PENDIENTE' ? 'estado-pendiente' : e.value === 'AUSENTE' ? 'estado-ausente' : ''}">
-                    <span>${e.label.split(' (')[0]}:</span>
-                    <span class="stat-num">${porEstado[e.value]}</span>
-                </div>`).join('')}
-                <div class="stat-pill primary">
-                    <span>🔎 REVISADOS:</span>
-                    <span class="stat-num">${porEstado['COMPLETO'] + porEstado['AUSENTE']}</span>
+                <div class="resumen-titulo">Resumen por estado</div>
+                <div class="resumen-grid">
+                    ${ESTADOS_REVISION.map(e => `
+                    <div class="resumen-item estado-${e.value.toLowerCase().replace(' ', '-')}">
+                        <div class="resumen-num">${porEstado[e.value]}</div>
+                        <div class="resumen-label">${e.label.split(' (')[0]}</div>
+                    </div>`).join('')}
+                </div>
+                <div class="resumen-total">
+                    <span>🔎 REVISADOS <small>(Completo + Ausente)</small></span>
+                    <strong>${porEstado['COMPLETO'] + porEstado['AUSENTE']}</strong>
                 </div>
             `;
-            statsBar.style.display = 'flex';
+            statsBar.style.display = 'block';
         }
 
         // Cambio de pestaña de filtro rápido
@@ -3278,10 +3380,8 @@
 
             let filtered = HISTORIAL_FULL_LIST.filter(item => {
                 // Filtro de pestaña
-                if (HISTORIAL_FILTER === 'registered' && !item.isRegistered) return false;
-                if (HISTORIAL_FILTER === 'pending' && item.isRegistered) return false;
-                if (HISTORIAL_FILTER === 'laptop' && !item.isLaptop) return false;
-                if (HISTORIAL_FILTER === 'compu' && item.isLaptop) return false;
+                if (HISTORIAL_FILTER === 'SIN' && item.estadoRevision) return false;
+                if (HISTORIAL_FILTER !== 'all' && HISTORIAL_FILTER !== 'SIN' && item.estadoRevision !== HISTORIAL_FILTER) return false;
 
                 // Filtro por texto
                 if (term) {
@@ -3324,8 +3424,10 @@
                     (item.estadoRevision === 'PENDIENTE' ? ' estado-pendiente' : item.estadoRevision === 'AUSENTE' ? ' estado-ausente' : '');
                 const icon = item.isLaptop ? '💻' : '🖥️';
                 const statusBadge = isReg
-                    ? `<span class="badge-status-registered">✅ En Drive</span>`
-                    : `<span class="badge-status-pending">⏳ Pendiente</span>`;
+                    ? `<span class="badge-status-registered">☁️ En Drive</span>`
+                    : `<span class="badge-status-pending">☁️ No en Drive</span>`;
+                const estadoInfo = ESTADOS_REVISION.find(e => e.value === item.estadoRevision);
+                const estadoBadge = `<span class="badge-estado estado-${(item.estadoRevision || 'sin').toLowerCase().replace(' ', '-')}">${estadoInfo ? estadoInfo.label.split(' (')[0] : '❔ Sin estado'}</span>`;
                 const typeBadge = `<span class="result-badge badge-${(item.tipo || '').toLowerCase()}">${item.tipo || (item.isLaptop ? 'LAPTOP' : 'DESKTOP')}</span>`;
 
                 let dateStr = '';
@@ -3356,7 +3458,10 @@
                                     <span class="pc-card-code">${item.name}</span>
                                     ${infoCodigos}
                                     ${typeBadge}
+                                </div>
+                                <div class="pc-card-badges">
                                     ${statusBadge}
+                                    ${estadoBadge}
                                 </div>
                                 <div class="pc-card-user">${userStr}</div>
                                 <div class="pc-card-details">
