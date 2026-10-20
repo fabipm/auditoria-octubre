@@ -2200,7 +2200,9 @@
                             cargo: val(6),
                             gerencia: val(7),
                             departamento: val(8),
-                            estado: estado
+                            estado: estado,
+                            asistencia: val(10) || 'PRESENTE', // Columna 11: ASISTENCIA
+                            motivo: val(11)                    // Columna 12: MOTIVO
                         });
 
                         if (estado && estado.toUpperCase().includes('REGISTRADO')) {
@@ -2437,6 +2439,19 @@
                         <label>DEPARTAMENTO:</label>
                         <input type="text" class="edit-field-input" id="edit_departamento" value="${escapeAttr(item.departamento)}" oninput="actualizarDatoEquipo('departamento', this.value)">
                     </div>
+
+                    <div class="edit-field-group">
+                        <label>ASISTENCIA:</label>
+                        <select class="edit-field-input" id="edit_asistencia" onchange="actualizarDatoEquipo('asistencia', this.value)">
+                            <option value="PRESENTE" ${item.asistencia !== 'AUSENTE' ? 'selected' : ''}>✅ PRESENTE</option>
+                            <option value="AUSENTE" ${item.asistencia === 'AUSENTE' ? 'selected' : ''}>❌ AUSENTE</option>
+                        </select>
+                    </div>
+
+                    <div class="edit-field-group">
+                        <label>MOTIVO (opcional):</label>
+                        <input type="text" class="edit-field-input" id="edit_motivo" value="${escapeAttr(item.motivo)}" placeholder="Ej. vacaciones, licencia..." oninput="actualizarDatoEquipo('motivo', this.value)">
+                    </div>
                 </div>
                 <div style="font-size:0.75rem; color:#15803d; margin-top:8px; font-weight:600;">
                     💡 Modifica cualquiera de estos campos y presiona <strong>"💾 Guardar cambios"</strong> para actualizarlos directamente en el Excel de Google Sheets.
@@ -2517,7 +2532,9 @@
                 usuario: (document.getElementById('edit_usuario') ? document.getElementById('edit_usuario').value : '').trim(),
                 cargo: (document.getElementById('edit_cargo') ? document.getElementById('edit_cargo').value : '').trim(),
                 gerencia: (document.getElementById('edit_gerencia') ? document.getElementById('edit_gerencia').value : '').trim(),
-                departamento: (document.getElementById('edit_departamento') ? document.getElementById('edit_departamento').value : '').trim()
+                departamento: (document.getElementById('edit_departamento') ? document.getElementById('edit_departamento').value : '').trim(),
+                asistencia: document.getElementById('edit_asistencia') ? document.getElementById('edit_asistencia').value : 'PRESENTE',
+                motivo: (document.getElementById('edit_motivo') ? document.getElementById('edit_motivo').value : '').trim()
             };
 
             const errorNuevo = validarEquipoNuevo();
@@ -2947,6 +2964,8 @@
                 const cargoVal = (document.getElementById('edit_cargo') ? document.getElementById('edit_cargo').value : selectedEquipment.cargo) || '-';
                 const gerenciaVal = (document.getElementById('edit_gerencia') ? document.getElementById('edit_gerencia').value : selectedEquipment.gerencia) || '-';
                 const deptoVal = (document.getElementById('edit_departamento') ? document.getElementById('edit_departamento').value : selectedEquipment.departamento) || '-';
+                const asistenciaVal = (document.getElementById('edit_asistencia') ? document.getElementById('edit_asistencia').value : selectedEquipment.asistencia) || 'PRESENTE';
+                const motivoVal = (document.getElementById('edit_motivo') ? document.getElementById('edit_motivo').value : selectedEquipment.motivo) || '-';
 
                 const infoText = [
                     "========================================",
@@ -2961,6 +2980,8 @@
                     `CARGO:        ${cargoVal}`,
                     `GERENCIA:     ${gerenciaVal}`,
                     `DEPARTAMENTO: ${deptoVal}`,
+                    `ASISTENCIA:   ${asistenciaVal}`,
+                    `MOTIVO:       ${motivoVal}`,
                     `FECHA REG.:   ${new Date().toLocaleString('es-PE')}`,
                     "========================================"
                 ].join('\n');
@@ -3003,7 +3024,9 @@
                     usuario: (document.getElementById('edit_usuario') ? document.getElementById('edit_usuario').value : selectedEquipment.usuario || '').trim(),
                     cargo: (document.getElementById('edit_cargo') ? document.getElementById('edit_cargo').value : selectedEquipment.cargo || '').trim(),
                     gerencia: (document.getElementById('edit_gerencia') ? document.getElementById('edit_gerencia').value : selectedEquipment.gerencia || '').trim(),
-                    departamento: (document.getElementById('edit_departamento') ? document.getElementById('edit_departamento').value : selectedEquipment.departamento || '').trim()
+                    departamento: (document.getElementById('edit_departamento') ? document.getElementById('edit_departamento').value : selectedEquipment.departamento || '').trim(),
+                    asistencia: document.getElementById('edit_asistencia') ? document.getElementById('edit_asistencia').value : (selectedEquipment.asistencia || 'PRESENTE'),
+                    motivo: (document.getElementById('edit_motivo') ? document.getElementById('edit_motivo').value : selectedEquipment.motivo || '').trim()
                 } : null,
                 originalKey: selectedEquipment ? (selectedEquipment.originalElsNuevo || selectedEquipment.elsNuevo) : null,
                 altKey: selectedEquipment ? (selectedEquipment.originalElsAntiguo || selectedEquipment.elsAntiguo) : null
