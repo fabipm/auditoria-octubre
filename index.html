@@ -712,6 +712,15 @@
             color: #4f46e5;
         }
 
+        .resumen-total.faltan {
+            margin-top: 4px;
+            color: #b45309;
+        }
+
+        .resumen-total.faltan strong {
+            color: #d97706;
+        }
+
         /* Pestañas de filtro en Historial */
         .historial-filter-tabs {
             display: flex;
@@ -3341,6 +3350,8 @@
             const porEstado = {};
             ESTADOS_REVISION.forEach(e => { porEstado[e.value] = list.filter(item => item.estadoRevision === e.value).length; });
 
+            const revisados = porEstado['COMPLETO'] + porEstado['AUSENTE'];
+
             // Panel de solo lectura (no son botones): número grande y etiqueta debajo
             statsBar.innerHTML = `
                 <div class="resumen-titulo">Resumen por estado</div>
@@ -3353,7 +3364,11 @@
                 </div>
                 <div class="resumen-total">
                     <span>🔎 REVISADOS <small>(Completo + Ausente)</small></span>
-                    <strong>${porEstado['COMPLETO'] + porEstado['AUSENTE']}</strong>
+                    <strong>${revisados}</strong>
+                </div>
+                <div class="resumen-total faltan">
+                    <span>⏳ FALTAN <small>(${list.length} equipos − ${revisados} revisados)</small></span>
+                    <strong>${list.length - revisados}</strong>
                 </div>
             `;
             statsBar.style.display = 'block';
