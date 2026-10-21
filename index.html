@@ -867,6 +867,44 @@
             border: 1px solid #86efac;
         }
 
+        .sede-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+
+        .sede-chips label {
+            cursor: pointer;
+        }
+
+        .sede-chips input {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .sede-chips span {
+            display: inline-block;
+            padding: 8px 12px;
+            border: 2px solid #cbd5e1;
+            border-radius: 999px;
+            background: #fff;
+            color: #334155;
+            font-size: 0.82rem;
+            font-weight: 600;
+        }
+
+        .sede-chips input:checked + span {
+            background: #1d4ed8;
+            border-color: #1d4ed8;
+            color: #fff;
+        }
+
+        .sede-chips input:focus-visible + span {
+            outline: 2px solid #93c5fd;
+            outline-offset: 2px;
+        }
+
         .pc-card-motivo {
             font-size: 0.8rem;
             color: #7c2d12;
@@ -1280,6 +1318,53 @@
 
             .tab-content {
                 padding: 12px;
+            }
+        }
+
+        /* Celular: todo a una columna y controles fáciles de tocar */
+        @media (max-width: 600px) {
+            .editable-fields-grid,
+            .selected-card-grid {
+                grid-template-columns: 1fr !important;
+            }
+
+            .edit-field-group {
+                grid-column: auto !important;
+            }
+
+            .selected-card-header {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .selected-card-header > div:last-child {
+                width: 100%;
+            }
+
+            .selected-card-header button {
+                flex: 1;
+                justify-content: center;
+                padding: 10px;
+            }
+
+            .drive-status-alert {
+                display: block;
+            }
+
+            .sede-chips span {
+                padding: 8px 10px;
+                font-size: 0.78rem;
+            }
+
+            #historialStatsBar .resumen-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            /* iOS hace zoom en campos con letra menor a 16px */
+            input,
+            select,
+            textarea {
+                font-size: 16px !important;
             }
         }
 
@@ -1711,6 +1796,12 @@
                 </button>
             </div>
 
+            <label class="selector-label">👷 Operario:</label>
+            <div id="operarioChips" class="sede-chips"></div>
+
+            <label class="selector-label">🏢 Sede:</label>
+            <div id="busquedaSedeChips" class="sede-chips"></div>
+
             <label class="selector-label">🔍 Buscar Equipo o Persona:</label>
             <div style="display:flex; gap:8px; align-items:stretch;">
             <div class="search-input-wrapper" style="flex:1;">
@@ -2129,6 +2220,7 @@
             </div>
 
             <div id="historialFilterWrapper" style="margin-bottom:14px; display:none;">
+                <div id="historialSedeChips" class="sede-chips"></div>
                 <input type="text" id="historialFilterInput" class="equipment-search-input"
                     placeholder="🔍 Filtrar por código, usuario, cargo o tipo..." oninput="filtrarHistorial()">
             </div>
@@ -2216,6 +2308,28 @@
         const GOOGLE_SHEET_JSONP_URL = "https://docs.google.com/spreadsheets/d/1dMhclruNOVk8sX3KpFhT-2FOryX_Aj-x50oxWXcLzvU/gviz/tq?tqx=responseHandler:googleSheetsCallback&gid=0&headers=0"; // headers=0: Google no adivina encabezados (con datos mezclados tomaba toda la hoja como encabezado)
         let EQUIPOS_DATABASE = [{ "tipo": "WORKSTATION", "elsNuevo": "ELS2001", "elsAntiguo": "ELS1101", "grupo": "TRABAJADOR", "cuenta": "rtaco", "usuario": "TACO COAYLA RENZO ALBERTO", "cargo": "ANALISTA DE INFRAESTRUCTURA TIC", "gerencia": "GERENCIA GENERAL", "departamento": "SUB GERENCIA DE TECNOLOGÍAS DE INFORMACIÓN Y COMUNICACIONES" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2002", "elsAntiguo": "-", "grupo": "TRABAJADOR", "cuenta": "ptaddey", "usuario": "TADDEY SILVA PAMELA TATIANA", "cargo": "ANALISTA DE OPERACIONES TIC", "gerencia": "SUB GERENCIA DE TIC", "departamento": "SUB GERENCIA DE TECNOLOGÍAS DE INFORMACIÓN Y COMUNICACIONES" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2004", "elsAntiguo": "ELS1064", "grupo": "TRABAJADOR", "cuenta": "galcazar", "usuario": "", "cargo": "", "gerencia": "", "departamento": "" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2005", "elsAntiguo": "ELS1424", "grupo": "PRACTICANTE", "cuenta": "pfinanzas", "usuario": "RAMOS ZAVALA MIGUEL ANTONIO", "cargo": "ESPECIALISTA DE FINANZAS", "gerencia": "GERENCIA DE ADMINISTRACIÓN Y FINANZAS", "departamento": "GERENCIA DE ADMINISTRACIÓN Y FINANZAS" }, { "tipo": "WORKSTATION", "elsNuevo": "ELS2006", "elsAntiguo": "ELS1443", "grupo": "TRABAJADOR", "cuenta": "rsante", "usuario": "SANTE ZAVALETA RICARDO MANUEL", "cargo": "ESPECIALISTA DE OPERACIONES E INFR. TIC", "gerencia": "GERENCIA GENERAL", "departamento": "SUB GERENCIA DE TECNOLOGÍAS DE INFORMACIÓN Y COMUNICACIONES" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2008", "elsAntiguo": "ELS1034", "grupo": "TRABAJADOR", "cuenta": "jlaura", "usuario": "LAURA CUSACANI JOSE EFRAIN", "cargo": "ESPECIALISTA DE FISCALIZACIÓN Y CALIDAD", "gerencia": "GERENCIA DE PLANEAMIENTO Y CONTROL DE GESTIÓN", "departamento": "DEPARTAMENTO DE FISCALIZACIÓN Y CALIDAD" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2009", "elsAntiguo": "ELS1032", "grupo": "TRABAJADOR", "cuenta": "rvillanueva", "usuario": "VILLANUEVA VILLANUEVA RICARDO SANCHEZ", "cargo": "JEFE DE CONTROL GESTION", "gerencia": "GERENCIA DE PLANEAMIENTO Y CONTROL DE GESTIÓN", "departamento": "DEPARTAMENTO DE CONTROL DE GESTIÓN" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2012", "elsAntiguo": "ELS1074", "grupo": "PRACTICANTE", "cuenta": "pactivofijo2", "usuario": "CARITA MESTAS EVELIN CAROL", "cargo": "GERENCIA DE ADMINISTRACIÓN Y FINANZAS", "gerencia": "GERENCIA DE ADMINISTRACIÓN Y FINANZAS", "departamento": "DEPARTAMENTO DE ACTIVO FIJO" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2013", "elsAntiguo": "ELS1024", "grupo": "TRABAJADOR", "cuenta": "ipimentel", "usuario": "PIMENTEL HUISA ISIDRO", "cargo": "JEFE DE ACTIVOS FIJOS", "gerencia": "GERENCIA DE ADMINISTRACIÓN Y FINANZAS", "departamento": "DEPARTAMENTO DE ACTIVO FIJO" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2015", "elsAntiguo": "ELS1092", "grupo": "TRABAJADOR", "cuenta": "gparedes", "usuario": "PAREDES FERNANDEZ GISELLE MILAGROS", "cargo": "ANALISTA DE SISTEMA INTEGRADO DE GESTIÓN", "gerencia": "GERENCIA DE PLANEAMIENTO Y CONTROL DE GESTIÓN", "departamento": "DEPARTAMENTO DE EXCELENCIA OPERACIONAL" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2016", "elsAntiguo": "ELS1039", "grupo": "TRABAJADOR", "cuenta": "hzapana", "usuario": "ZAPANA CONDORI HECTOR RAUL", "cargo": "ANALISTA DE CONTROL DE GESTIÓN", "gerencia": "GERENCIA DE PLANEAMIENTO Y CONTROL DE GESTIÓN", "departamento": "DEPARTAMENTO DE CONTROL DE GESTIÓN" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2018", "elsAntiguo": "ELS0601", "grupo": "TRABAJADOR", "cuenta": "kchaina", "usuario": "CHAIÑA QUISPE KELLY ELISA", "cargo": "ANALISTA DE SISTEMAS DE INFORMACION", "gerencia": "GERENCIA GENERAL", "departamento": "SUB GERENCIA DE TECNOLOGÍAS DE INFORMACIÓN Y COMUNICACIONES" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2019", "elsAntiguo": "ELS1184", "grupo": "TRABAJADOR", "cuenta": "cwestres", "usuario": "WESTRES SOIFER CINTHYA BRANA", "cargo": "", "gerencia": "GERENCIA DE PLANEAMIENTO Y CONTROL DE GESTIÓN", "departamento": "DEPARTAMENTO DE CONTROL DE GESTIÓN" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2020", "elsAntiguo": "ELS1001", "grupo": "TRABAJADOR", "cuenta": "ralanguia", "usuario": "ALANGUIA RAMOS RUFINO LEUCADIO", "cargo": "TÉCNICO LÍDER EN SEGURIDAD Y MEDIO AMBIE", "gerencia": "GERENCIA DE PLANEAMIENTO Y CONTROL DE GESTIÓN", "departamento": "DEPARTAMENTO DE SEGURIDAD Y MEDIO AMBIENTE" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2022", "elsAntiguo": "ELS1102", "grupo": "TRABAJADOR", "cuenta": "sfernandez", "usuario": "FERNÁNDEZ VARGAS SUSANA GREGORIA", "cargo": "JEFE DE INTEGRIDAD Y CUMPLIMIENTO", "gerencia": "GERENCIA GENERAL", "departamento": "OFICINA DE INTEGRIDAD Y CUMPLIMIENTO" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2023", "elsAntiguo": "ELS1012", "grupo": "TRABAJADOR", "cuenta": "ichevarria", "usuario": "CHEVARRIA CAZORLA IBETH ARIADNA", "cargo": "ESPECIALISTA DE EXCELENCIA OPERACIONAL", "gerencia": "GERENCIA DE PLANEAMIENTO Y CONTROL DE GESTIÓN", "departamento": "DEPARTAMENTO DE EXCELENCIA OPERACIONAL" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2024", "elsAntiguo": "ELS1075", "grupo": "TRABAJADOR", "cuenta": "dmachaca", "usuario": "MACHACA CHAVEZ DEYVER", "cargo": "ANALISTA DE COMPENSACIONES", "gerencia": "GERENCIA DE ADMINISTRACIÓN Y FINANZAS", "departamento": "DEPARTAMENTO DE GESTIÓN HUMANA" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2025", "elsAntiguo": "ELS1025", "grupo": "TRABAJADOR", "cuenta": "rmenendez", "usuario": "MENENDEZ ALE RENZO GUILLERMO", "cargo": "ANALISTA DE CONTROL PATRIMONIAL", "gerencia": "GERENCIA DE ADMINISTRACIÓN Y FINANZAS", "departamento": "DEPARTAMENTO DE ACTIVO FIJO" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2026", "elsAntiguo": "ELS1069", "grupo": "TRABAJADOR", "cuenta": "mquenta", "usuario": "QUENTA CARDENAS MASIELL YAKELIN", "cargo": "ANALISTA DE DESARROLLO ORGANIZACIONAL", "gerencia": "GERENCIA DE ADMINISTRACIÓN Y FINANZAS", "departamento": "DEPARTAMENTO DE GESTIÓN HUMANA" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2027", "elsAntiguo": "ELS1009", "grupo": "TRABAJADOR", "cuenta": "valbarracin", "usuario": "ALBARRACIN CARPIO VICTOR JEYSON PIERRE", "cargo": "ESPECIALISTA DE DESARROLLO ORGANIZACIONA", "gerencia": "GERENCIA DE ADMINISTRACIÓN Y FINANZAS", "departamento": "DEPARTAMENTO DE GESTIÓN HUMANA" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2029", "elsAntiguo": "ELS1021", "grupo": "TRABAJADOR", "cuenta": "fbedoya", "usuario": "BEDOYA ALARCON FREDDY MANUEL", "cargo": "ANALISTA DE CONTRATACIONES", "gerencia": "GERENCIA DE ADMINISTRACIÓN Y FINANZAS", "departamento": "DEPARTAMENTO DE LOGISTICA" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2030", "elsAntiguo": "ELS1185", "grupo": "TRABAJADOR", "cuenta": "ltorrejon", "usuario": "TORREJON REBOLLEDO ROSALINDA HELENA", "cargo": "ASISTENTE DE GESTIÓN DOCUMENTAL", "gerencia": "GERENCIA DE ADMINISTRACIÓN Y FINANZAS", "departamento": "DEPARTAMENTO DE LOGISTICA" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2031", "elsAntiguo": "ELS1076", "grupo": "PRACTICANTE", "cuenta": "preclamostacna", "usuario": "CHUCUYA GARCIA AISSA LUZ/ BUSCAR JEFE", "cargo": "GERENCIA COMERCIAL", "gerencia": "GERENCIA COMERCIAL", "departamento": "DEPARTAMENTO DE ATENCIÓN AL CLIENTE" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2033", "elsAntiguo": "ELS1023", "grupo": "TRABAJADOR", "cuenta": "Wochoa", "usuario": "OCHOA BARRA WENDY JENIFFER", "cargo": "ANALISTA DE BIENESTAR SOCIAL", "gerencia": "GERENCIA DE ADMINISTRACIÓN Y FINANZAS", "departamento": "DEPARTAMENTO DE GESTIÓN HUMANA" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2035", "elsAntiguo": "ELS1014", "grupo": "TRABAJADOR", "cuenta": "mgarcia", "usuario": "GARCIA FUENTES MARIANELLY", "cargo": "ANALISTA DE GESTIÓN DOCUMENTAL", "gerencia": "GERENCIA DE ADMINISTRACIÓN Y FINANZAS", "departamento": "DEPARTAMENTO DE LOGISTICA" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2036", "elsAntiguo": "ELS1015", "grupo": "TRABAJADOR", "cuenta": "dchura", "usuario": "CHURA ALANOCA DAYSI LOURDES", "cargo": "JEFE DE IMAGEN Y RESPONSABILIDAD SOCIAL", "gerencia": "GERENCIA GENERAL", "departamento": "OFICINA DE IMAGEN Y RESPONSABILIDAD SOCIAL" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2039", "elsAntiguo": "ELS1073", "grupo": "TRABAJADOR", "cuenta": "fninaja", "usuario": "NINAJA SANGA FERNANDO", "cargo": "ESPECIALISTA DE SERVICIOS GENERALES", "gerencia": "GERENCIA DE ADMINISTRACIÓN Y FINANZAS", "departamento": "DEPARTAMENTO DE LOGISTICA" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2040", "elsAntiguo": "ELS1018", "grupo": "TRABAJADOR", "cuenta": "yacho", "usuario": "ACHO AVENDAÑO YOLA JUDITH", "cargo": "ANALISTA CONTABLE", "gerencia": "GERENCIA DE ADMINISTRACIÓN Y FINANZAS", "departamento": "DEPARTAMENTO DE CONTABILIDAD" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2054", "elsAntiguo": "ELS1019", "grupo": "TRABAJADOR", "cuenta": "lgonzales", "usuario": "GONZALES MACHACA LIDIA VANESA", "cargo": "ANALISTA DE COSTOS Y TRIBUTOS", "gerencia": "GERENCIA DE ADMINISTRACIÓN Y FINANZAS", "departamento": "DEPARTAMENTO DE CONTABILIDAD" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2055", "elsAntiguo": "ELS1020", "grupo": "TRABAJADOR", "cuenta": "vhuascape", "usuario": "HUASCUPE MAMANI VERONICA AMANDA", "cargo": "JEFE DE CONTABILIDAD", "gerencia": "GERENCIA DE ADMINISTRACIÓN Y FINANZAS", "departamento": "DEPARTAMENTO DE CONTABILIDAD" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2066", "elsAntiguo": "ELS1030", "grupo": "TRABAJADOR", "cuenta": "jparedes", "usuario": "PAREDES PAUCAR JEFFERSSON JOEL", "cargo": "TÉCNICO LIDER OPERACIONES COMERCIALES", "gerencia": "GERENCIA ZONAL TACNA", "departamento": "DEPARTAMENTO COMERCIAL ZONAL TACNA" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2067", "elsAntiguo": "ELS1105", "grupo": "TRABAJADOR", "cuenta": "directorio1", "usuario": "HUERTAS CONDORI CINTHYA MIREYA", "cargo": "ASISTENTE DE GERENCIA", "gerencia": "GERENCIA GENERAL", "departamento": "GERENCIA GENERAL" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2068", "elsAntiguo": "ELS1081", "grupo": "TRABAJADOR", "cuenta": "edelgado", "usuario": "DELGADO TORRES EDI", "cargo": "ANALISTA DE RECLAMOS", "gerencia": "GERENCIA COMERCIAL", "departamento": "DEPARTAMENTO DE ATENCIÓN AL CLIENTE" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2069", "elsAntiguo": "ELS1011", "grupo": "TRABAJADOR", "cuenta": "pespinoza", "usuario": "ESPINOZA MOLINA PAOLA DEL ROSARIO", "cargo": "ESPECIALISTA DE ATENCIÓN AL CLIENTE", "gerencia": "GERENCIA COMERCIAL", "departamento": "DEPARTAMENTO DE ATENCIÓN AL CLIENTE" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2070", "elsAntiguo": "ELS1095", "grupo": "TRABAJADOR", "cuenta": "psoportetic3", "usuario": "INQUILLA INQUILLA LUIS ROBERTO", "cargo": "SUB GERENTE DE TECN DE INFORMACIÓN Y COM", "gerencia": "GERENCIA GENERAL", "departamento": "SUB GERENCIA DE TECNOLOGÍAS DE INFORMACIÓN Y COMUNICACIONES" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2073", "elsAntiguo": "ELS1022", "grupo": "TRABAJADOR", "cuenta": "jneyra", "usuario": "NEYRA SALAZAR JULIO CESAR", "cargo": "ESPECIALISTA DE CONTRATACIONES", "gerencia": "GERENCIA DE ADMINISTRACIÓN Y FINANZAS", "departamento": "DEPARTAMENTO DE LOGISTICA" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2074", "elsAntiguo": "ELS1100", "grupo": "TRABAJADOR", "cuenta": "ycondori", "usuario": "CONDORI GUERRERO YESSICA MAGALY", "cargo": "ANALISTA CONTABLE", "gerencia": "GERENCIA DE ADMINISTRACIÓN Y FINANZAS", "departamento": "DEPARTAMENTO DE CONTABILIDAD" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2075", "elsAntiguo": "ELS1029", "grupo": "TRABAJADOR", "cuenta": "yrodriguez", "usuario": "RODRIGUEZ FLORES YVAN ALEX", "cargo": "ANALISTA DE CONTROL INSTITUCIONAL", "gerencia": "ÓRGANO DE CONTROL INSTITUCIONAL", "departamento": "ÓRGANO DE CONTROL INSTITUCIONAL" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2076", "elsAntiguo": "ELS1036", "grupo": "TRABAJADOR", "cuenta": "rquispe", "usuario": "QUISPE CAHUANA RAUL EDDY", "cargo": "TÉCNICO LIDER DE RECLAMOS", "gerencia": "GERENCIA ZONAL TACNA", "departamento": "DEPARTAMENTO COMERCIAL ZONAL TACNA" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2077", "elsAntiguo": "ELS1016", "grupo": "TRABAJADOR", "cuenta": "lticona", "usuario": "TICONA CHAMBILLA LOURDES LUCIA", "cargo": "ASISTENTE DE RECLAMOS", "gerencia": "GERENCIA COMERCIAL", "departamento": "DEPARTAMENTO DE ATENCIÓN AL CLIENTE" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2078", "elsAntiguo": "ELS1098", "grupo": "TRABAJADOR", "cuenta": "mramos", "usuario": "RAMOS ZAVALA MIGUEL ANTONIO", "cargo": "ESPECIALISTA DE FINANZAS", "gerencia": "GERENCIA DE ADMINISTRACIÓN Y FINANZAS", "departamento": "GERENCIA DE ADMINISTRACIÓN Y FINANZAS" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2079", "elsAntiguo": "ELS1006", "grupo": "TRABAJADOR", "cuenta": "yromero", "usuario": "ROMERO CALDERON YANELI LUS", "cargo": "ANALISTA DE FINANZAS", "gerencia": "GERENCIA DE ADMINISTRACIÓN Y FINANZAS", "departamento": "GERENCIA DE ADMINISTRACIÓN Y FINANZAS" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2080", "elsAntiguo": "ELS1047", "grupo": "TRABAJADOR", "cuenta": "mvilca", "usuario": "VILCA ANDRADE MIGUEL ANGEL", "cargo": "ANALISTA DE FACTURACIÓN", "gerencia": "GERENCIA COMERCIAL", "departamento": "DEPARTAMENTO DE OPERACIONES COMERCIALES" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2081", "elsAntiguo": "ELS1028", "grupo": "TRABAJADOR", "cuenta": "ecaljaro", "usuario": "CALJARO QUISPE ELOY", "cargo": "ANALISTA DE FACTURACIÓN", "gerencia": "GERENCIA COMERCIAL", "departamento": "DEPARTAMENTO DE OPERACIONES COMERCIALES" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2082", "elsAntiguo": "ELS1007", "grupo": "TRABAJADOR", "cuenta": "paguilar", "usuario": "AGUILAR HUANACUNI PAMELA SOLEDAD", "cargo": "ANALISTA LEGAL", "gerencia": "GERENCIA GENERAL", "departamento": "SUB GERENCIA LEGAL" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2083", "elsAntiguo": "ELS1004", "grupo": "TRABAJADOR", "cuenta": "yluque", "usuario": "LUQUE COHAILA YUDIE JAQUELIN", "cargo": "ANALISTA DE GESTIÓN DE COBRANZAS", "gerencia": "GERENCIA COMERCIAL", "departamento": "DEPARTAMENTO DE OPERACIONES COMERCIALES" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2084", "elsAntiguo": "ELS1010", "grupo": "TRABAJADOR", "cuenta": "mflores", "usuario": "FLORES LANCHIPA MARIA ALICIA", "cargo": "JEFE DE GESTIÓN HUMANA", "gerencia": "GERENCIA DE ADMINISTRACIÓN Y FINANZAS", "departamento": "DEPARTAMENTO DE GESTIÓN HUMANA" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2085", "elsAntiguo": "ELS1096", "grupo": "TRABAJADOR", "cuenta": "mmarino", "usuario": "MARIÑO CHUQUILLANQUE MARCO ANTONIO", "cargo": "ANALISTA DE REGULACIÓN TARIFARIA Y GC", "gerencia": "GERENCIA COMERCIAL", "departamento": "GERENCIA COMERCIAL" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2086", "elsAntiguo": "ELS1026", "grupo": "TRABAJADOR", "cuenta": "ecoaquira", "usuario": "COAQUIRA HOLGUIN ELIZABETH", "cargo": "ESPECIALISTA DE OPERACIONES COMERCIALES", "gerencia": "GERENCIA COMERCIAL", "departamento": "DEPARTAMENTO DE OPERACIONES COMERCIALES" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2091", "elsAntiguo": "ELS1031", "grupo": "TRABAJADOR", "cuenta": "dibarra", "usuario": "IBARRA BEHRENS DANITZA IVONNE", "cargo": "SUB GERENTE LEGAL", "gerencia": "GERENCIA GENERAL", "departamento": "SUB GERENCIA LEGAL" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2092", "elsAntiguo": "ELS1027", "grupo": "TRABAJADOR", "cuenta": "llaqui", "usuario": "LAQUI TELLEZ LUIS ABDON", "cargo": "TÉCNICO OPERACIONES COMERCIALES", "gerencia": "GERENCIA ZONAL TACNA", "departamento": "DEPARTAMENTO COMERCIAL ZONAL TACNA" }, { "tipo": "WORKSTATION", "elsNuevo": "ELS2300", "elsAntiguo": "ELS0602", "grupo": "TRABAJADOR", "cuenta": "apovea", "usuario": "POVEA CONDORI ABEL", "cargo": "ESPECIALISTA DE SOLUCIONES TECNOLOGICAS", "gerencia": "GERENCIA GENERAL", "departamento": "SUB GERENCIA DE TECNOLOGÍAS DE INFORMACIÓN Y COMUNICACIONES" }, { "tipo": "WORKSTATION", "elsNuevo": "ELS2301", "elsAntiguo": "ELS0603", "grupo": "TRABAJADOR", "cuenta": "rpoma", "usuario": "POMA LAURA RAFAEL HUMBERTO", "cargo": "ESPECIALISTA DE SISTEMAS DE INFORMACION", "gerencia": "GERENCIA GENERAL", "departamento": "SUB GERENCIA DE TECNOLOGÍAS DE INFORMACIÓN Y COMUNICACIONES" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2320", "elsAntiguo": "ELS1142", "grupo": "TRABAJADOR", "cuenta": "rquispem", "usuario": "QUISPE MAMANI RICHARD JESUS", "cargo": "ANALISTA CONTABLE", "gerencia": "GERENCIA DE ADMINISTRACIÓN Y FINANZAS", "departamento": "DEPARTAMENTO DE CONTABILIDAD" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2321", "elsAntiguo": "ELS1110", "grupo": "TRABAJADOR", "cuenta": "jsoria", "usuario": "SORIA CARRILLO BRIGTTE JACQUELINE", "cargo": "ANALISTA DE INTEGRIDAD Y CUMPLIMIENTO", "gerencia": "GERENCIA GENERAL", "departamento": "OFICINA DE INTEGRIDAD Y CUMPLIMIENTO" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2322", "elsAntiguo": "ELS1035", "grupo": "TRABAJADOR", "cuenta": "vchura", "usuario": "CHURA AMONES VICTOR RAÚL", "cargo": "TÉCNICO DE RECLAMOS", "gerencia": "GERENCIA ZONAL TACNA", "departamento": "DEPARTAMENTO COMERCIAL ZONAL TACNA" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2323", "elsAntiguo": "ELS0853", "grupo": "PRACTICANTE", "cuenta": "pcomercialtacna6/descalera", "usuario": "ESCALERA PUMA DIANA MILAGROS/BUSCAR JEFE", "cargo": "GERENCIA COMERCIAL", "gerencia": "GERENCIA COMERCIAL", "departamento": "DEPARTAMENTO DE OPERACIONES COMERCIALES" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2328", "elsAntiguo": "ELS1115", "grupo": "TRABAJADOR", "cuenta": "chuertas", "usuario": "HUERTAS CONDORI CINTHYA MIREYA", "cargo": "ASISTENTE DE GERENCIA", "gerencia": "GERENCIA GENERAL", "departamento": "GERENCIA GENERAL" }, { "tipo": "DESKTOP", "elsNuevo": "ELS2329", "elsAntiguo": "ELS1175", "grupo": "TRABAJADOR", "cuenta": "ncolque", "usuario": "COLQUE WICHE NADIA CLAUDIA", "cargo": "ANALISTA LEGAL", "gerencia": "GERENCIA GENERAL", "departamento": "SUB GERENCIA LEGAL" }, { "tipo": "DESKTOP", "elsNuevo": "ELS1142", "elsAntiguo": "ELS0852", "grupo": "TRABAJADOR", "cuenta": "pcontabilidad2", "usuario": "HUASCUPE MAMANI VERONICA AMANDA", "cargo": "JEFE DE CONTABILIDAD", "gerencia": "GERENCIA DE ADMINISTRACIÓN Y FINANZAS", "departamento": "DEPARTAMENTO DE CONTABILIDAD" }, { "tipo": "DESKTOP", "elsNuevo": "ELS1119", "elsAntiguo": "ELS0863", "grupo": "TRABAJADOR", "cuenta": "bienestar", "usuario": "OCHOA BARRA WENDY JENIFFER", "cargo": "ANALISTA DE BIENESTAR SOCIAL", "gerencia": "GERENCIA DE ADMINISTRACIÓN Y FINANZAS", "departamento": "DEPARTAMENTO DE GESTIÓN HUMANA" }, { "tipo": "NUEVO", "elsNuevo": "SN", "elsAntiguo": "ELS0604", "grupo": "TRABAJADOR", "cuenta": "vibarra", "usuario": "IBARRA MONTECINOS VERONICA DEL PILAR", "cargo": "ANALISTA DE OPERACIONES TIC", "gerencia": "GERENCIA GENERAL", "departamento": "SUB GERENCIA DE TECNOLOGÍAS DE INFORMACIÓN Y COMUNICACIONES" }, { "tipo": "NUEVO", "elsNuevo": "SN", "elsAntiguo": "ELS1136", "grupo": "TRABAJADOR", "cuenta": "SN", "usuario": "SN", "cargo": "SN", "gerencia": "SN", "departamento": "SN" }, { "tipo": "NUEVO", "elsNuevo": "SN", "elsAntiguo": "ELS0863", "grupo": "TRABAJADOR", "cuenta": "SN", "usuario": "SN", "cargo": "SN", "gerencia": "SN", "departamento": "SN" }, { "tipo": "LAPTOP", "elsNuevo": "ELS2003", "elsAntiguo": "ELS1421", "grupo": "TRABAJADOR", "cuenta": "achevarria / gparedes", "usuario": "CHEVARRIA CAZORLA IBETH ARIADNA", "cargo": "ESPECIALISTA DE EXCELENCIA OPERACIONAL", "gerencia": "GERENCIA DE PLANEAMIENTO Y CONTROL DE GESTIÓN", "departamento": "DEPARTAMENTO DE EXCELENCIA OPERACIONAL" }, { "tipo": "LAPTOP", "elsNuevo": "ELS2007", "elsAntiguo": "ELS1414", "grupo": "TRABAJADOR", "cuenta": "sfernandez", "usuario": "FERNÁNDEZ VARGAS SUSANA GREGORIA", "cargo": "JEFE DE INTEGRIDAD Y CUMPLIMIENTO", "gerencia": "GERENCIA GENERAL", "departamento": "OFICINA DE INTEGRIDAD Y CUMPLIMIENTO" }, { "tipo": "LAPTOP", "elsNuevo": "ELS2010", "elsAntiguo": "ELS1498", "grupo": "TRABAJADOR", "cuenta": "rsante", "usuario": "SANTE ZAVALETA RICARDO MANUEL", "cargo": "ESPECIALISTA DE OPERACIONES E INFR. TIC", "gerencia": "GERENCIA GENERAL", "departamento": "SUB GERENCIA DE TECNOLOGÍAS DE INFORMACIÓN Y COMUNICACIONES" }, { "tipo": "LAPTOP", "elsNuevo": "ELS2011", "elsAntiguo": "ELS1409", "grupo": "TRABAJADOR", "cuenta": "ipimentel", "usuario": "PIMENTEL HUISA ISIDRO", "cargo": "JEFE DE ACTIVOS FIJOS", "gerencia": "GERENCIA DE ADMINISTRACIÓN Y FINANZAS", "departamento": "DEPARTAMENTO DE ACTIVO FIJO" }, { "tipo": "LAPTOP", "elsNuevo": "ELS2017", "elsAntiguo": "ELS1402", "grupo": "TRABAJADOR", "cuenta": "apovea", "usuario": "POVEA CONDORI ABEL", "cargo": "ESPECIALISTA DE SOLUCIONES TECNOLOGICAS", "gerencia": "GERENCIA GENERAL", "departamento": "SUB GERENCIA DE TECNOLOGÍAS DE INFORMACIÓN Y COMUNICACIONES" }, { "tipo": "LAPTOP", "elsNuevo": "ELS2021", "elsAntiguo": "ELS1418", "grupo": "TRABAJADOR", "cuenta": "marpasi", "usuario": "ARPASI QUISPE MIRIAN ROSARIO", "cargo": "ANALISTA DE TRANSFORMACIÓN DIGITAL Y CIB", "gerencia": "GERENCIA GENERAL", "departamento": "SUB GERENCIA DE TECNOLOGÍAS DE INFORMACIÓN Y COMUNICACIONES" }, { "tipo": "LAPTOP", "elsNuevo": "ELS2028", "elsAntiguo": "ELS1423", "grupo": "TRABAJADOR", "cuenta": "ljimenez", "usuario": "JIMENEZ LOUREIRO LUIS FERNANDO", "cargo": "JEFE DE SEGURIDAD Y MEDIO AMBIENTE", "gerencia": "GERENCIA DE PLANEAMIENTO Y CONTROL DE GESTIÓN", "departamento": "DEPARTAMENTO DE SEGURIDAD Y MEDIO AMBIENTE" }, { "tipo": "LAPTOP", "elsNuevo": "ELS2032", "elsAntiguo": "ELS1406", "grupo": "TRABAJADOR", "cuenta": "Remoto", "usuario": "AGUILAR HUANACUNI PAMELA SOLEDAD", "cargo": "ANALISTA LEGAL", "gerencia": "GERENCIA GENERAL", "departamento": "SUB GERENCIA LEGAL" }, { "tipo": "LAPTOP", "elsNuevo": "ELS2034", "elsAntiguo": "ELS1412", "grupo": "TRABAJADOR", "cuenta": "dmercedes", "usuario": "MERCEDES BRICEÑO DIEGO JAVIER", "cargo": "GERENTE DE PLANEAMIENTO Y CONTROL DE GESTIÓN", "gerencia": "GERENCIA DE PLANEAMIENTO Y CONTROL DE GESTIÓN", "departamento": "GERENCIA DE PLANEAMIENTO Y CONTROL DE GESTIÓN" }, { "tipo": "LAPTOP", "elsNuevo": "ELS2037", "elsAntiguo": "ELS1403", "grupo": "TRABAJADOR", "cuenta": "rpoma", "usuario": "POMA LAURA RAFAEL HUMBERTO", "cargo": "ESPECIALISTA DE SISTEMAS DE INFORMACION", "gerencia": "GERENCIA GENERAL", "departamento": "SUB GERENCIA DE TECNOLOGÍAS DE INFORMACIÓN Y COMUNICACIONES" }, { "tipo": "LAPTOP", "elsNuevo": "ELS2047", "elsAntiguo": "ELS1416", "grupo": "TRABAJADOR", "cuenta": "electrosur", "usuario": "TADDEY SILVA PAMELA TATIANA", "cargo": "ANALISTA DE OPERACIONES TIC", "gerencia": "SUB GERENCIA DE TIC", "departamento": "SUB GERENCIA DE TECNOLOGÍAS DE INFORMACIÓN Y COMUNICACIONES" }, { "tipo": "LAPTOP", "elsNuevo": "ELS2056", "elsAntiguo": "ELS1200", "grupo": "TRABAJADOR", "cuenta": "wmedina", "usuario": "MEDINA CARO WILSON ENRIQUE", "cargo": "GERENTE GENERAL", "gerencia": "GERENCIA GENERAL", "departamento": "GERENCIA GENERAL" }, { "tipo": "LAPTOP", "elsNuevo": "ELS2057", "elsAntiguo": "ELS1408", "grupo": "TRABAJADOR", "cuenta": "chuertas", "usuario": "HUERTAS CONDORI CINTHYA MIREYA", "cargo": "ASISTENTE DE GERENCIA", "gerencia": "GERENCIA GENERAL", "departamento": "GERENCIA GENERAL" }, { "tipo": "LAPTOP", "elsNuevo": "ELS2058", "elsAntiguo": "ELS1417", "grupo": "TRABAJADOR", "cuenta": "jccama", "usuario": "CHOQUECOTA CCAMA JOSÉ MIGUEL", "cargo": "JEFE DEL ORGANO DE CONTROL INSTITUCIONAL", "gerencia": "ÓRGANO DE CONTROL INSTITUCIONAL", "departamento": "GERENCIA GENERAL" }, { "tipo": "LAPTOP", "elsNuevo": "ELS2059", "elsAntiguo": "ELS1419", "grupo": "TRABAJADOR", "cuenta": "ecoaquira", "usuario": "COAQUIRA HOLGUIN ELIZABETH", "cargo": "ESPECIALISTA DE OPERACIONES COMERCIALES", "gerencia": "GERENCIA COMERCIAL", "departamento": "DEPARTAMENTO DE OPERACIONES COMERCIALES" }, { "tipo": "LAPTOP", "elsNuevo": "ELS2065", "elsAntiguo": "ELS1405", "grupo": "TRABAJADOR", "cuenta": "dibarra", "usuario": "IBARRA BEHRENS DANITZA IVONNE", "cargo": "SUB GERENTE LEGAL", "gerencia": "GERENCIA GENERAL", "departamento": "SUB GERENCIA LEGAL" }];
         // Estados de revisión del equipo (columna ESTADO del Sheet)
+        const SEDES = ['SEDE 28 DE JULIO - TACNA', 'SEDE PARA', 'SEDE LEGUIA', 'SEDE ALMACEN VIÑANI'];
+        let HISTORIAL_SEDE = 'all';  // 'all' | una de SEDES | 'SIN' (sin sede)
+        const OPERARIOS = ['FABIOLA', 'EDSON', 'YAMPIER', 'JOSELUIS', 'SERGIO', 'ERICK'];
+        let OPERARIO = '';  // quién está registrando; se recuerda en este navegador
+        try { OPERARIO = localStorage.getItem('operario') || ''; } catch (e) { }
+        let BUSQUEDA_SEDE = 'all';   // sede elegida arriba del buscador de Nuevo Registro
+
+        // Botones de sede (radio buttons con forma de píldora). extras: opciones antes/después de las sedes
+        function sedeChipsHtml(name, selected, onchange, antes, despues) {
+            const opciones = (antes || []).concat(SEDES.map(sd => ({ value: sd, label: sd.replace('SEDE ', '') })), despues || []);
+            return opciones.map(o => `<label><input type="radio" name="${name}" value="${escapeAttr(o.value)}" ${o.value === selected ? 'checked' : ''} onchange="${onchange}"><span>${o.label}</span></label>`).join('');
+        }
+
+        function elegirOperario(nombre) {
+            OPERARIO = nombre;
+            try { localStorage.setItem('operario', nombre); } catch (e) { }
+        }
+
+        function coincideSede(item, sede) {
+            return sede === 'all' || (sede === 'SIN' ? !item.sede : item.sede === sede);
+        }
+
         const ESTADOS_REVISION = [
             { value: 'COMPLETO', label: '✅ COMPLETO' },
             { value: 'PENDIENTE', label: '🕒 PENDIENTE (volver a otra hora)' },
@@ -2337,7 +2451,10 @@
                             estado: estado,
                             // Columna 11: ESTADO (vacío = sin revisar; "PRESENTE" de la versión anterior equivale a COMPLETO)
                             estadoRevision: val(10).toUpperCase() === 'PRESENTE' ? 'COMPLETO' : val(10).toUpperCase(),
-                            motivo: val(11)                    // Columna 12: MOTIVO
+                            motivo: val(11),                   // Columna 12: MOTIVO
+                            sede: val(12).toUpperCase(),       // Columna 13: SEDE
+                            operario: val(13),                 // Columna 14: OPERARIO
+                            fila: i + 1                        // N° de fila en el Sheet: el .gs actualiza esa fila exacta
                         });
 
                         if (estado && estado.toUpperCase().includes('REGISTRADO')) {
@@ -2384,14 +2501,14 @@
             const resultsContainer = document.getElementById('equipmentResults');
             const clearBtn = document.getElementById('btnClearSearch');
 
-            if (!query || query.trim().length === 0) {
+            const vacio = !query || query.trim().length === 0;
+            clearBtn.style.display = vacio ? 'none' : 'flex';
+            // Sin texto: solo se listan equipos si hay una sede elegida
+            if (vacio && BUSQUEDA_SEDE === 'all') {
                 resultsContainer.style.display = 'none';
-                clearBtn.style.display = 'none';
                 return;
             }
-
-            clearBtn.style.display = 'flex';
-            const term = query.trim().toLowerCase();
+            const term = (query || '').trim().toLowerCase();
 
             // Filtrar en base de datos considerando todos los 9 campos
             lastSearchResults = EQUIPOS_DATABASE.filter(item => {
@@ -2406,7 +2523,7 @@
                     item.tipo,
                     item.grupo
                 ].join(' ').toLowerCase();
-                return searchString.includes(term);
+                return coincideSede(item, BUSQUEDA_SEDE) && searchString.includes(term);
             });
 
             renderSugerencias(lastSearchResults);
@@ -2586,6 +2703,16 @@
                         <label>MOTIVO (opcional):</label>
                         <input type="text" class="edit-field-input" id="edit_motivo" value="${escapeAttr(item.motivo)}" placeholder="Ej. volver a las 3 pm, vacaciones..." oninput="actualizarDatoEquipo('motivo', this.value)">
                     </div>
+
+                    <div class="edit-field-group" style="grid-column:1/-1;">
+                        <label>SEDE:</label>
+                        <input type="hidden" id="edit_sede" value="${escapeAttr(item.sede)}">
+                        <div class="sede-chips">
+                            ${sedeChipsHtml('edit_sede_radio', item.sede || '',
+                                "document.getElementById('edit_sede').value = this.value; actualizarDatoEquipo('sede', this.value)",
+                                item.sede && !SEDES.includes(item.sede) ? [{ value: item.sede, label: item.sede }] : [])}
+                        </div>
+                    </div>
                 </div>
                 <div style="font-size:0.75rem; color:#15803d; margin-top:8px; font-weight:600;">
                     💡 Modifica cualquiera de estos campos y presiona <strong>"💾 Guardar cambios"</strong> para actualizarlos directamente en el Excel de Google Sheets.
@@ -2600,7 +2727,7 @@
             lastSearchResults = [{
                 tipo: 'DESKTOP', elsNuevo: pareceCodigo ? term.replace(/\s+/g, '').toUpperCase() : '', elsAntiguo: '-',
                 grupo: 'TRABAJADOR', cuenta: '', usuario: pareceCodigo ? '' : term.toUpperCase(),
-                cargo: '', gerencia: '', departamento: ''
+                cargo: '', gerencia: '', departamento: '', sede: BUSQUEDA_SEDE !== 'all' ? BUSQUEDA_SEDE : ''
             }];
             seleccionarEquipo(0);
             // Sin claves originales: el backend no encuentra fila y agrega una nueva al final
@@ -2651,6 +2778,18 @@
         }
 
         // Guardar cambios directamente en Google Sheets (Excel)
+        // Refleja en la base local lo que se guardó en el Sheet (la lectura del Sheet puede tardar minutos en mostrarlo)
+        function aplicarCambioLocal(payload, filaGuardada) {
+            const fila = filaGuardada || payload.fila;
+            let idx = fila ? EQUIPOS_DATABASE.findIndex(item => item.fila === fila) : -1;
+            if (idx < 0) idx = EQUIPOS_DATABASE.findIndex(item =>
+                (payload.originalKey && payload.originalKey !== 'SN' && item.elsNuevo === payload.originalKey) ||
+                (payload.altKey && payload.altKey !== '-' && payload.altKey !== 'SN' && item.elsAntiguo === payload.altKey));
+            const actualizado = { ...(idx >= 0 ? EQUIPOS_DATABASE[idx] : {}), ...payload.equipment, fila: fila || null };
+            if (idx >= 0) EQUIPOS_DATABASE[idx] = actualizado; else EQUIPOS_DATABASE.push(actualizado);
+            return actualizado;
+        }
+
         async function guardarCambiosEnExcel() {
             if (!selectedEquipment) return;
 
@@ -2668,9 +2807,12 @@
                 gerencia: (document.getElementById('edit_gerencia') ? document.getElementById('edit_gerencia').value : '').trim(),
                 departamento: (document.getElementById('edit_departamento') ? document.getElementById('edit_departamento').value : '').trim(),
                 estadoRevision: document.getElementById('edit_estadoRevision') ? document.getElementById('edit_estadoRevision').value : 'COMPLETO',
-                motivo: (document.getElementById('edit_motivo') ? document.getElementById('edit_motivo').value : '').trim()
+                motivo: (document.getElementById('edit_motivo') ? document.getElementById('edit_motivo').value : '').trim(),
+                sede: document.getElementById('edit_sede') ? document.getElementById('edit_sede').value : '',
+                operario: OPERARIO
             };
 
+            if (!OPERARIO) { alert('👷 Selecciona el OPERARIO (arriba del buscador) antes de guardar.'); return; }
             const errorNuevo = validarEquipoNuevo();
             if (errorNuevo) { alert(errorNuevo); return; }
 
@@ -2696,6 +2838,7 @@
                     action: 'updateEquipment',
                     originalKey: selectedEquipment.originalElsNuevo || selectedEquipment.elsNuevo,
                     altKey: selectedEquipment.originalElsAntiguo || selectedEquipment.elsAntiguo,
+                    fila: selectedEquipment.fila || null,
                     equipment: eq
                 };
 
@@ -2706,17 +2849,8 @@
                 const result = await res.json();
 
                 if (result && result.success) {
-                    // Actualizar en la base de datos local en memoria
-                    const idx = EQUIPOS_DATABASE.findIndex(item =>
-                        item.elsNuevo === payload.originalKey || (payload.altKey && payload.altKey !== '-' && payload.altKey !== 'SN' && item.elsAntiguo === payload.altKey)
-                    );
-                    if (idx >= 0) {
-                        EQUIPOS_DATABASE[idx] = { ...eq };
-                    } else {
-                        EQUIPOS_DATABASE.push({ ...eq });
-                    }
-
-                    selectedEquipment = { ...eq, originalElsNuevo: eq.elsNuevo, originalElsAntiguo: eq.elsAntiguo };
+                    const actualizado = aplicarCambioLocal(payload, result.row);
+                    selectedEquipment = { ...actualizado, originalElsNuevo: eq.elsNuevo, originalElsAntiguo: eq.elsAntiguo };
                     actualizarPcName();
 
                     if (statusDiv) {
@@ -2770,6 +2904,12 @@
 
         // Inicializar sincronización con Google Sheets y cajas de captura al cargar
         window.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('operarioChips').innerHTML = OPERARIOS.map(o =>
+                `<label><input type="radio" name="operario" value="${o}" ${o === OPERARIO ? 'checked' : ''} onchange="elegirOperario(this.value)"><span>${o}</span></label>`).join('');
+            document.getElementById('busquedaSedeChips').innerHTML = sedeChipsHtml('busquedaSede', 'all',
+                "BUSQUEDA_SEDE = this.value; onSearchInput(document.getElementById('equipmentSearchInput').value)", [{ value: 'all', label: 'Todas' }]);
+            document.getElementById('historialSedeChips').innerHTML = sedeChipsHtml('historialSede', 'all',
+                'HISTORIAL_SEDE = this.value; filtrarHistorial()', [{ value: 'all', label: 'Todas' }], [{ value: 'SIN', label: '❔ Sin sede' }]);
             sincronizarConGoogleSheets(false);
             initCaptureBoxes();
         });
@@ -3065,6 +3205,7 @@
                 document.getElementById('equipmentSearchInput').focus();
                 return;
             }
+            if (!OPERARIO) { alert('👷 Selecciona el OPERARIO (arriba del buscador) antes de guardar.'); return; }
             const errorNuevo = validarEquipoNuevo();
             if (errorNuevo) { alert(errorNuevo); return; }
 
@@ -3100,6 +3241,7 @@
                 const deptoVal = (document.getElementById('edit_departamento') ? document.getElementById('edit_departamento').value : selectedEquipment.departamento) || '-';
                 const estadoVal = (document.getElementById('edit_estadoRevision') ? document.getElementById('edit_estadoRevision').value : selectedEquipment.estadoRevision) || 'COMPLETO';
                 const motivoVal = (document.getElementById('edit_motivo') ? document.getElementById('edit_motivo').value : selectedEquipment.motivo) || '-';
+                const sedeVal = (document.getElementById('edit_sede') ? document.getElementById('edit_sede').value : selectedEquipment.sede) || '-';
 
                 const infoText = [
                     "========================================",
@@ -3116,6 +3258,8 @@
                     `DEPARTAMENTO: ${deptoVal}`,
                     `ESTADO:       ${estadoVal}`,
                     `MOTIVO:       ${motivoVal}`,
+                    `SEDE:         ${sedeVal}`,
+                    `OPERARIO:     ${OPERARIO || '-'}`,
                     `FECHA REG.:   ${new Date().toLocaleString('es-PE')}`,
                     "========================================"
                 ].join('\n');
@@ -3160,10 +3304,13 @@
                     gerencia: (document.getElementById('edit_gerencia') ? document.getElementById('edit_gerencia').value : selectedEquipment.gerencia || '').trim(),
                     departamento: (document.getElementById('edit_departamento') ? document.getElementById('edit_departamento').value : selectedEquipment.departamento || '').trim(),
                     estadoRevision: document.getElementById('edit_estadoRevision') ? document.getElementById('edit_estadoRevision').value : (selectedEquipment.estadoRevision || 'COMPLETO'),
-                    motivo: (document.getElementById('edit_motivo') ? document.getElementById('edit_motivo').value : selectedEquipment.motivo || '').trim()
+                    motivo: (document.getElementById('edit_motivo') ? document.getElementById('edit_motivo').value : selectedEquipment.motivo || '').trim(),
+                    sede: document.getElementById('edit_sede') ? document.getElementById('edit_sede').value : (selectedEquipment.sede || ''),
+                    operario: OPERARIO
                 } : null,
                 originalKey: selectedEquipment ? (selectedEquipment.originalElsNuevo || selectedEquipment.elsNuevo) : null,
-                altKey: selectedEquipment ? (selectedEquipment.originalElsAntiguo || selectedEquipment.elsAntiguo) : null
+                altKey: selectedEquipment ? (selectedEquipment.originalElsAntiguo || selectedEquipment.elsAntiguo) : null,
+                fila: selectedEquipment ? (selectedEquipment.fila || null) : null
             };
 
             try {
@@ -3171,10 +3318,16 @@
                     method: 'POST',
                     body: JSON.stringify(payload)
                 });
+                const result = await response.json().catch(() => null);
+                if (!result || !result.success) throw new Error((result && result.error) || 'Respuesta inválida');
+                if (payload.equipment) {
+                    const actualizado = aplicarCambioLocal(payload, result.row);
+                    selectedEquipment = { ...actualizado, originalElsNuevo: actualizado.elsNuevo, originalElsAntiguo: actualizado.elsAntiguo };
+                }
                 showStatus(statusEl, 'success', `✅ ¡${totalCapturas} captura(s) subidas con éxito a Google Drive (${pcName})! Estado REGISTRADO actualizado y resaltado en verde en Google Sheets.`);
                 DRIVE_REGISTERED_MAP[pcName.toUpperCase()] = true;
             } catch (error) {
-                showStatus(statusEl, 'error', '❌ Error de conexión al subir capturas. Revisa la consola.');
+                showStatus(statusEl, 'error', '❌ Error al subir capturas: ' + error.message);
                 console.error(error);
             }
 
@@ -3239,8 +3392,7 @@
                 // Construir la lista completa y unificada (Drive + Base de Datos de Equipos)
                 HISTORIAL_FULL_LIST = construirListaHistorialCompleta(driveFolders);
 
-                // Mostrar barra de estadísticas y controles
-                actualizarHistorialStats(HISTORIAL_FULL_LIST);
+                // Mostrar controles (las estadísticas se calculan en filtrarHistorial según la sede)
                 if (filterTabs) filterTabs.style.display = 'flex';
                 if (filterWrapper) filterWrapper.style.display = 'block';
 
@@ -3308,7 +3460,9 @@
                     isRegistered: isRegistered,
                     date: date,
                     estadoRevision: (eq.estadoRevision || '').toUpperCase(),
-                    motivo: eq.motivo || ''
+                    motivo: eq.motivo || '',
+                    sede: eq.sede || '',
+                    operario: eq.operario || ''
                 });
             });
 
@@ -3364,7 +3518,7 @@
 
             // Panel de solo lectura (no son botones): número grande y etiqueta debajo
             statsBar.innerHTML = `
-                <div class="resumen-titulo">Resumen por estado</div>
+                <div class="resumen-titulo">Resumen por estado${HISTORIAL_SEDE === 'all' ? '' : ' — ' + (HISTORIAL_SEDE === 'SIN' ? 'Sin sede' : HISTORIAL_SEDE)}</div>
                 <div class="resumen-grid">
                     ${ESTADOS_REVISION.map(e => `
                     <div class="resumen-item estado-${e.value.toLowerCase().replace(' ', '-')}">
@@ -3403,7 +3557,11 @@
             const input = document.getElementById('historialFilterInput');
             const term = (input ? input.value : '').trim().toLowerCase();
 
-            let filtered = HISTORIAL_FULL_LIST.filter(item => {
+            // La sede filtra también el resumen por estado
+            const porSede = HISTORIAL_FULL_LIST.filter(item => coincideSede(item, HISTORIAL_SEDE));
+            actualizarHistorialStats(porSede);
+
+            let filtered = porSede.filter(item => {
                 // Filtro de pestaña
                 if (HISTORIAL_FILTER === 'SIN' && item.estadoRevision) return false;
                 if (HISTORIAL_FILTER !== 'all' && HISTORIAL_FILTER !== 'SIN' && item.estadoRevision !== HISTORIAL_FILTER) return false;
@@ -3417,7 +3575,8 @@
                         item.usuario,
                         item.cargo,
                         item.cuenta,
-                        item.tipo
+                        item.tipo,
+                        item.sede
                     ].join(' ').toLowerCase();
                     if (!searchString.includes(term)) return false;
                 }
@@ -3493,6 +3652,8 @@
                                 <div class="pc-card-motivo">📝 Motivo: ${item.motivo ? escapeAttr(item.motivo).replace(/</g, '&lt;') : '<em>sin motivo registrado</em>'}</div>` : ''}
                                 <div class="pc-card-details">
                                     <span>${ctaStr}</span>
+                                    ${item.sede ? ` • 🏢 ${escapeAttr(item.sede)}` : ''}
+                                    ${item.operario ? ` • 👷 ${escapeAttr(item.operario)}` : ''}
                                     ${cargoStr}
                                     ${dateStr}
                                 </div>
