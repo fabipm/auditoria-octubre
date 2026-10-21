@@ -867,6 +867,15 @@
             border: 1px solid #86efac;
         }
 
+        .pc-card-motivo {
+            font-size: 0.8rem;
+            color: #7c2d12;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 6px;
+            padding: 3px 8px;
+            margin: 4px 0 2px;
+        }
+
         .pc-card-badges {
             display: flex;
             flex-wrap: wrap;
@@ -3298,7 +3307,8 @@
                     isLaptop: isLap,
                     isRegistered: isRegistered,
                     date: date,
-                    estadoRevision: (eq.estadoRevision || '').toUpperCase()
+                    estadoRevision: (eq.estadoRevision || '').toUpperCase(),
+                    motivo: eq.motivo || ''
                 });
             });
 
@@ -3479,6 +3489,8 @@
                                     ${estadoBadge}
                                 </div>
                                 <div class="pc-card-user">${userStr}</div>
+                                ${(item.estadoRevision === 'PENDIENTE' || item.estadoRevision === 'AUSENTE') ? `
+                                <div class="pc-card-motivo">📝 Motivo: ${item.motivo ? escapeAttr(item.motivo).replace(/</g, '&lt;') : '<em>sin motivo registrado</em>'}</div>` : ''}
                                 <div class="pc-card-details">
                                     <span>${ctaStr}</span>
                                     ${cargoStr}
